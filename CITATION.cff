@@ -4,7 +4,7 @@ title: "lean-matrix-sos: A Lean formalization of matrix sum-of-squares factoriza
 authors:
   - name: "selpo"
 version: 0.1.0
-date-released: 2026-05-24
+date-released: 2026-09-06
 repository-code: "https://github.com/selpoG/lean-matrix-sos"
 license: "Apache-2.0"
 keywords:
