@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite it as below."
+title: "lean-matrix-sos: A Lean formalization of matrix sum-of-squares factorization theorems"
+authors:
+  - name: "selpo"
+version: 0.1.0
+date-released: 2026-05-24
+repository-code: "https://github.com/selpoG/lean-matrix-sos"
+license: "Apache-2.0"
+keywords:
+  - Lean
+  - mathlib
+  - sum of squares
+  - matrix polynomial
+  - Hahn series

@@ -1,0 +1,10 @@
+/.lake
+/tmp
+docs/*.aux
+docs/*.dvi
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.synctex.gz

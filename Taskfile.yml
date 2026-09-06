@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  pdf:
+    desc: Build the Japanese and English matrix SOS proof PDFs
+    cmds:
+      - uplatex -interaction=nonstopmode -halt-on-error -output-directory=docs docs/matrix_sos_proof_ja.tex
+      - uplatex -interaction=nonstopmode -halt-on-error -output-directory=docs docs/matrix_sos_proof_ja.tex
+      - uplatex -interaction=nonstopmode -halt-on-error -output-directory=docs docs/matrix_sos_proof_ja.tex
+      - dvipdfmx -o docs/matrix_sos_proof_ja.pdf docs/matrix_sos_proof_ja.dvi
+      - uplatex -interaction=nonstopmode -halt-on-error -output-directory=docs docs/matrix_sos_proof_en.tex
+      - uplatex -interaction=nonstopmode -halt-on-error -output-directory=docs docs/matrix_sos_proof_en.tex
+      - uplatex -interaction=nonstopmode -halt-on-error -output-directory=docs docs/matrix_sos_proof_en.tex
+      - dvipdfmx -o docs/matrix_sos_proof_en.pdf docs/matrix_sos_proof_en.dvi
+      - |
+        if rg -n 'Warning|Overfull|Underfull|undefined|Error|Fatal' \
+          docs/matrix_sos_proof_en.log docs/matrix_sos_proof_ja.log; then
+          echo 'PDF build emitted warnings or errors.' >&2
+          exit 1
+        fi
+        echo 'PDF build completed without warnings.'

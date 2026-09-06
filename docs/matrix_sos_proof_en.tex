@@ -1,0 +1,1348 @@
+\documentclass[uplatex,dvipdfmx]{jsarticle}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{thmtools,thm-restate}
+\usepackage{enumitem}
+\usepackage{seqsplit}
+\usepackage[dvipdfmx,unicode]{hyperref}
+\hypersetup{
+  pdftitle={SOS Factorization and Markov--Lukacs Certificates for Real Symmetric Univariate Matrix Polynomials},
+  pdfauthor={selpo}
+}
+
+\newcommand{\Poly}{\mathbb{R}[X]}
+\newcommand{\Frac}{\mathbb{R}(X)}
+\newcommand{\RationalHahn}{\operatorname{RHahn}}
+\newcommand{\Hahn}{\mathbb{R}((t^{\mathbb{Q}}))}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\psd}{\succeq 0}
+\newcommand{\NNwd}{\operatorname{NNwd}}
+\newcommand{\lean}[1]{\texttt{\expandafter\seqsplit\expandafter{\detokenize{#1}}}}
+
+\newcommand{\restateprefix}{}
+\newtheoremstyle{matrixsosdefinition}
+  {3pt}{3pt}{\normalfont}{}{\bfseries}{.}{.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (\restateprefix#3)}}
+
+\theoremstyle{matrixsosdefinition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\title{SOS Factorization and Markov--Lukacs Certificates for Real Symmetric Univariate Matrix Polynomials}
+\author{selpo}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Overview and Main Theorems}
+
+The central result formalized here is a bounded full-line sums-of-squares
+factorization theorem for real symmetric univariate matrix polynomials.  As
+corollaries, the formalization also gives half-line Markov--Lukacs-type SOS certificates,
+finite-interval Markov--Lukacs-type SOS certificates, and scalar and constant
+matrix special cases.  The proof uses a Hahn series field with rational
+exponents as an auxiliary ordered field; the final statements are statements
+about real polynomial matrices.  The full-line theorem follows the mathematical
+theme of Hanselka--Sinn~\cite{HanselkaSinn}.
+
+Here SOS abbreviates ``sum of squares''.  In the scalar case this means a finite
+sum of polynomial squares; in the matrix case it means the corresponding
+rectangular factorization
+\[
+  S=R^{\mathsf T}R
+\]
+by a polynomial matrix \(R\).
+
+The Markov--Lukacs-type statements are the half-line and interval forms that
+express nonnegativity using SOS terms weighted by polynomials nonnegative on the
+domain.  In this project the weights include \(X\), \(X-a\), \(b-X\), and
+\((X-a)(b-X)\).  For the classical scalar background, see
+Powers--Reznick~\cite{PowersReznick}.  Related work on matrix-polynomial
+positivity and SOS representations includes
+Blekherman--Plaumann--Sinn--Vinzant~\cite{BPSV} and
+Klep--Schweighofer~\cite{KlepSchweighofer}.
+
+For a real symmetric matrix \(A\), \(A\psd\) means
+\(v^{\mathsf T}Av\ge0\) for every column vector \(v\).  Thus \(P(x)\psd\) for a
+polynomial matrix \(P\) means that the real matrix obtained by evaluating each
+entry at \(x\) is positive semidefinite.
+
+\begin{definition}[SOS matrix polynomials and Gram representations]\label{def:sos-gram-en}
+  Let \(m\in\mathbb{N}\).
+  A matrix polynomial \(S\in\Mat_m(\Poly)\) is SOS if there is a polynomial
+  matrix \(R\in\Mat_{\ell\times m}(\Poly)\), for some \(\ell\in\mathbb{N}\),
+  such that
+	  \[
+	    S=R^{\mathsf T}R.
+	  \]
+	  We call such an \(R\) an SOS factor of \(S\).
+
+	  For \(r,m\in\mathbb{N}\), define
+	  \(Q_{r,m}\in\Mat_{(r+1)m\times m}(\Poly)\) as follows.  Its rows are
+	  indexed by pairs \((k,a)\), \(0\le k\le r,\ 1\le a\le m\), its columns are
+	  indexed by \(1\le b\le m\), and its entries are
+  \[
+    (Q_{r,m})_{(k,a),b}=
+    \begin{cases}
+      X^k, & a=b,\\
+	      0, & a\ne b.
+	    \end{cases}
+	  \]
+	  For any real matrix \(Y\in\Mat_{(r+1)m}(\mathbb{R})\), the product
+	  \(Q_{r,m}^{\mathsf T}YQ_{r,m}\) is an \(m\times m\) polynomial matrix; if
+	  \(Y\) is symmetric, then this polynomial matrix is symmetric.
+	  A bounded SOS factorization of \(S\) with factor degree at most \(e\) is
+	  equivalent to a Gram representation
+  \[
+    S=Q_{e,m}^{\mathsf T}YQ_{e,m}
+  \]
+	  with a real positive semidefinite matrix \(Y\).  This is obtained by expanding
+  the entries of the SOS factor in the monomial basis \(1,X,\ldots,X^e\) and
+  collecting the coefficients into a real matrix.  Conversely, the spectral
+  theorem gives \(Y=C^{\mathsf T}C\) for a real positive semidefinite \(Y\);
+  then \(R=CQ_{e,m}\) is an SOS factor of degree at most \(e\).
+\end{definition}
+
+\begin{restatable}[Full-line matrix SOS]{theorem}{fullLineMatrixSOS}
+  Let \(m,d\in\mathbb{N}\). Let \(P\in\Mat_m(\Poly)\) be symmetric, and assume
+  every entry of \(P\) has degree at most \(2d\). Then the following are
+  equivalent:
+  \begin{enumerate}[label=(\arabic*)]
+    \item \(P(x)\psd\) for every \(x\in\mathbb{R}\).
+    \item There is \(R\in\Mat_{(m+1)\times m}(\Poly)\), whose entries all have
+      degree at most \(d\), such that
+      \[
+        P=R^{\mathsf T}R.
+      \]
+    \item There is a real positive semidefinite matrix
+      \(Y\in\Mat_{(d+1)m}(\mathbb{R})\) such that
+      \[
+        P=Q_{d,m}^{\mathsf T}YQ_{d,m}.
+      \]
+  \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Half-line Markov--Lukacs certificate]{theorem}{halfLineMarkovLukacs}
+  Let \(m,d\in\mathbb{N}\), let \(M\in\Mat_m(\Poly)\) be symmetric, and let
+  \(a\in\mathbb{R}\).
+  Assume every entry of \(M\) has degree at most \(d\).  Put
+  \[
+    r(d)=\left\lfloor\frac{d}{2}\right\rfloor,\qquad
+    s(d)=\left\lfloor\frac{\max(d-1,0)}{2}\right\rfloor.
+  \]
+  Then the following are equivalent:
+  \begin{enumerate}[label=(\arabic*)]
+    \item \(M(x)\psd\) for every \(x\ge a\).
+    \item There are \(A,B\in\Mat_{(m+1)\times m}(\Poly)\) such that
+      \[
+        M=A^{\mathsf T}A+(X-a)B^{\mathsf T}B,
+      \]
+      with entries of \(A\) of degree at most \(r(d)\), and entries of \(B\) of
+      degree at most \(s(d)\).
+    \item There are real positive semidefinite matrices
+      \[
+        Y_1\in\Mat_{(r(d)+1)m}(\mathbb{R}),\qquad
+        Y_2\in\Mat_{(s(d)+1)m}(\mathbb{R})
+      \]
+      such that
+      \[
+        M =
+        Q_{r(d),m}^{\mathsf T}Y_1Q_{r(d),m}
+        +
+        (X-a)\,Q_{s(d),m}^{\mathsf T}Y_2Q_{s(d),m}.
+      \]
+  \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Finite-interval Markov--Lukacs certificate]{theorem}{finiteIntervalMarkovLukacs}
+  Let \(m,d\in\mathbb{N}\), let \(M\in\Mat_m(\Poly)\) be symmetric, and let
+  \(a,b\in\mathbb{R}\) with \(a<b\).
+  Put \(d_-=\max(d-1,0)\).
+  If the entries of \(M\) have degree at most \(2d\), then the following are
+  equivalent:
+  \begin{enumerate}[label=(E\arabic*)]
+    \item \(M(x)\psd\) for every \(x\in[a,b]\).
+    \item There are \(A,B\in\Mat_{(m+1)\times m}(\Poly)\) such that
+      \[
+        M=A^{\mathsf T}A+(X-a)(b-X)B^{\mathsf T}B,
+      \]
+      with entries of \(A\) of degree at most \(d\), and entries of \(B\) of
+      degree at most \(d_-\).
+    \item There are real positive semidefinite matrices
+      \[
+        Y_0\in\Mat_{(d+1)m}(\mathbb{R}),\qquad
+        Y_1\in\Mat_{(d_-+1)m}(\mathbb{R})
+      \]
+      such that
+      \[
+        M =
+        Q_{d,m}^{\mathsf T}Y_0Q_{d,m}
+        +(X-a)(b-X)\,Q_{d_-,m}^{\mathsf T}Y_1Q_{d_-,m}.
+      \]
+  \end{enumerate}
+  If the entries of \(M\) have degree at most \(2d+1\), then the following are
+  equivalent:
+  \begin{enumerate}[label=(O\arabic*)]
+    \item \(M(x)\psd\) for every \(x\in[a,b]\).
+    \item There are \(A,B\in\Mat_{(m+1)\times m}(\Poly)\) such that
+      \[
+        M=(X-a)A^{\mathsf T}A+(b-X)B^{\mathsf T}B,
+      \]
+      with entries of \(A\) and \(B\) of degree at most \(d\).
+    \item There are real positive semidefinite matrices
+      \(Y_0,Y_1\in\Mat_{(d+1)m}(\mathbb{R})\) such that
+      \[
+        M =
+        (X-a)\,Q_{d,m}^{\mathsf T}Y_0Q_{d,m}
+        +(b-X)\,Q_{d,m}^{\mathsf T}Y_1Q_{d,m}.
+      \]
+  \end{enumerate}
+\end{restatable}
+
+\begin{corollary}[Scalar and constant cases]
+  Let \(d\in\mathbb{N}\), and let \(p\in\mathbb{R}[X]\) have degree at most
+  \(2d\).  Then \(p\) is nonnegative on the real line if and only if
+  \(p=q_1^2+q_2^2\) for some real polynomials \(q_1,q_2\) of degree at most
+  \(d\).
+  Let \(m\in\mathbb{N}\), and let \(A\in\Mat_m(\mathbb{R})\).  Then \(A\) is
+  positive semidefinite if and only if \(A=R^TR\) for some
+  \(R\in\Mat_{(m+1)\times m}(\mathbb{R})\).
+\end{corollary}
+
+The proof below uses the following rational-function lemma.  Its proof is the
+part that uses the Hahn field, Tsen's theorem, and Pfister forms, and is given
+in Appendices~\ref{sec:hahn-start-en}--\ref{sec:ternary-local-global-en}.
+
+First define the notation used in the statement.  For \(r\in\Frac\), write
+\(\NNwd(r)\) if \(r\) is nonnegative at every real point where it is defined:
+for a representation \(r=f/g\) with \(g\ne0\),
+\[
+  g(x)\ne0 \quad\Longrightarrow\quad \frac{f(x)}{g(x)}\ge0
+  \qquad (x\in\mathbb{R}).
+\]
+This condition is independent of the chosen representation.
+
+\begin{restatable}[Binary sum-of-squares representation]{lemma}{binarySumTwoSquares}
+\label{lem:binary-sum-two-squares-en}
+  If \(a,b\in\Frac^\times\) satisfy \(\NNwd(a)\) and \(\NNwd(b)\), then
+  there exist \(u,v\in\Frac\) such that
+  \[
+    1=au^2+bv^2.
+  \]
+\end{restatable}
+
+We first prove the matrix part assuming
+Lemma~\ref{lem:binary-sum-two-squares-en}.  The proof of that lemma is given in
+the appendix.
+
+\section{Full-Line Matrix Factorization}\label{sec:matrix-factorization-en}
+
+\begin{lemma}\label{lem:rational-square-factorization-en}
+  Let \(n\in\mathbb{N}\). Let \(A\in\Mat_n(\Poly)\) be positive semidefinite at
+  every real point, and suppose \(\det A\ne0\) and \(\det A\) is a square in
+  \(\Frac\). Then
+  \[
+    A=S^{\mathsf T}S
+  \]
+  for some \(S\in\Mat_n(\Frac)\).
+\end{lemma}
+
+\begin{proof}
+  If \(n=0\), the unique empty matrix is the required factor.  Assume \(n>0\).
+  Put \(F=\Frac\). Diagonalize the symmetric matrix \(A\) over \(F\). Thus
+  there are \(C\in\operatorname{GL}_n(F)\) and
+  \(d_1,\ldots,d_n\in F^\times\) such that
+  \[
+    C^{\mathsf T}AC=\operatorname{diag}(d_1,\ldots,d_n).
+  \]
+  Positivity at real points shows that each \(d_i\) is nonnegative where
+  defined: outside the finite set of poles of \(C\), evaluate the congruence;
+  at any remaining point where \(d_i\) is defined, use continuity of \(d_i\)
+  and density of the complement of that finite set. Since \(\det A\) is a square, write \(\det A=r^2\) with \(r\in F\).
+  Then
+  \[
+    d_1\cdots d_n
+    =\det(C^{\mathsf T}AC)
+    =\det(C)^2\det(A)
+    =(\det(C)r)^2,
+  \]
+  so the product of the diagonal coefficients is also a square in \(F\).
+
+  The key two-dimensional move is the following. If \(a,b\in\Frac^\times\) are
+  nonnegative where defined, Lemma~\ref{lem:binary-sum-two-squares-en} gives
+  \(1=au^2+bv^2\). With
+  \[
+    G=
+    \begin{pmatrix}u&-bv\\ v&au\end{pmatrix}\in\operatorname{GL}_2(F),
+  \]
+  a direct calculation gives
+  \[
+    G^{\mathsf T}
+    \begin{pmatrix}a&0\\0&b\end{pmatrix}
+    G
+    =
+    \begin{pmatrix}1&0\\0&ab\end{pmatrix}.
+  \]
+  Here \(\det G=a u^2+b v^2=1\).  Thus this congruence transformation
+  extracts a square entry \(1\) from the two diagonal entries \(a,b\) and
+  replaces the remaining information by their product \(ab\). Applying this
+  operation successively gives a matrix \(E\in\operatorname{GL}_n(F)\) such that
+  \[
+    E^{\mathsf T}\operatorname{diag}(d_1,\ldots,d_n)E
+    =
+    \operatorname{diag}(1,\ldots,1,d_1\cdots d_n).
+  \]
+  Since the last entry is a square, say \(d_1\cdots d_n=(r')^2\) with
+  \(r'\in F\), the final diagonal form is \(D^{\mathsf T}D\), where
+  \[
+    D=\operatorname{diag}(1,\ldots,1,r')\in\Mat_n(F).
+  \]
+  If \(C^{\mathsf T}AC=\operatorname{diag}(d_1,\ldots,d_n)\) is the initial
+  diagonalization and \(E\) is the product of the two-dimensional changes, then
+  \(E^{\mathsf T}C^{\mathsf T}ACE=D^{\mathsf T}D\). Hence
+  \(A=(D(CE)^{-1})^{\mathsf T}(D(CE)^{-1})\).
+\end{proof}
+
+\begin{lemma}\label{lem:clear-common-denominator-en}
+  Suppose \(A\in\Mat_n(\Poly)\) and \(S\in\Mat_n(\Frac)\) satisfy
+  \(A=S^{\mathsf T}S\). Then there are a nonzero polynomial \(q\in\Poly\) and
+  \(T\in\Mat_n(\Poly)\) such that
+  \[
+    q^2A=T^{\mathsf T}T.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Write \(A=S^{\mathsf T}S\) over \(\Frac\). Let \(q\) be a common denominator
+  of all entries of \(S\), and put \(T=qS\). Then
+  \(T^{\mathsf T}T=q^2A\).
+\end{proof}
+
+\begin{lemma}[Real-root factor descent]\label{lem:real-root-factor-descent-en}
+  Let \(p\in\Poly\) be irreducible, and suppose \(p(\alpha)=0\) for some
+  \(\alpha\in\mathbb{R}\).  If \(A\in\Mat_n(\Poly)\) and
+  \(T\in\Mat_n(\Poly)\) satisfy
+  \[
+    p^2A=T^{\mathsf T}T,
+  \]
+  then there is \(U\in\Mat_n(\Poly)\) such that
+  \[
+    A=U^{\mathsf T}U.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Comparing diagonal entries gives
+  \[
+    p^2A_{ii}=\sum_k T_{ki}^2.
+  \]
+  Evaluating at \(X=\alpha\), the left hand side is zero, so
+  \[
+    \sum_k T_{ki}(\alpha)^2=0.
+  \]
+  This is a sum of squares of real numbers, hence \(T_{ki}(\alpha)=0\) for all
+  \(k,i\).  Since an irreducible real polynomial with root \(\alpha\) is a
+  nonzero scalar multiple of \(X-\alpha\), every \(T_{ki}\) is divisible by
+  \(p\).  Write \(T=pU\), with
+  \(U\in\Mat_n(\Poly)\).  Substitution gives
+  \(p^2A=p^2U^{\mathsf T}U\), and cancellation of \(p^2\) gives
+  \(A=U^{\mathsf T}U\).
+\end{proof}
+
+\begin{lemma}[Two-row block construction]\label{lem:two-row-block-construction-en}
+  Let \(q,n\in\mathbb{N}\), and let \(N=2q\) or \(N=2q+1\).
+  Let \(a,b\in\mathbb{R}\) with \(b\ne0\), and put
+  \[
+    p=(X-a)^2+b^2\in\Poly.
+  \]
+  Let \(T\in\Mat_{N\times n}(\Poly)\), and suppose that \(p\) divides every
+  entry of \(T^{\mathsf T}T\).
+  Then there are a real orthogonal matrix \(O\in\Mat_N(\mathbb{R})\) and
+  matrices \(H\in\Mat_N(\Poly)\) and \(M\in\Mat_{N\times n}(\Poly)\) with the
+  following properties.  If \(N=2q\), then
+  \[
+    OT=HM,\qquad H^{\mathsf T}H=pI_N.
+  \]
+  If \(N=2q+1\), then
+  \[
+    OT=HM,\qquad
+    H^{\mathsf T}H=\operatorname{diag}(pI_{2q},p^2).
+  \]
+\end{lemma}
+
+\begin{proof}
+  Put \(z=a-ib\in\mathbb{C}\).  For a polynomial \(f\in\Poly\), divisibility by \(p\) is
+  equivalent to \(f(z)=0\).
+
+  From the divisibility assumption, \(T(z)^{\mathsf T}T(z)=0\).  Thus the
+  subspace \(L\subset\mathbb{C}^{N}\) generated by the columns of \(T(z)\) is
+  totally isotropic for the bilinear form \(x^{\mathsf T}y\).  Choose a
+  Hermitian orthonormal basis \(w_1,\ldots,w_r\) of \(L\).  Write
+  \(w_j=a_j+ib_j\), with \(a_j,b_j\in\mathbb{R}^{N}\). Then
+  \[
+    \sqrt2\,\Re w_1,\ \sqrt2\,\Im w_1,\ldots,
+    \sqrt2\,\Re w_r,\ \sqrt2\,\Im w_r
+  \]
+  is an orthonormal system in \(\mathbb{R}^{N}\).  Hence \(2r\le N\), and
+  \(r\le\lfloor N/2\rfloor=q\).
+  Extend these vectors to an orthonormal basis \(e_1,\ldots,e_N\).  Let
+  \(O\in\Mat_N(\mathbb{R})\) be the real orthogonal matrix whose
+  \(a\)-th row is \(e_a^{\mathsf T}\).
+
+  If \(y\) is any column of \(T(z)\), then \(y\in L\), so
+  \(y=\sum_j\mu_jw_j\).  For \(1\le j\le r\), the two coordinates of \(y\)
+  measured by \(e_{2j-1},e_{2j}\) are
+  \[
+    \left(\sqrt2\,a_j^{\mathsf T}y,\sqrt2\,b_j^{\mathsf T}y\right)
+    =\frac{\mu_j}{\sqrt2}(1,i).
+  \]
+  For the remaining basis vectors, the corresponding rows of \(OT(z)\) are
+  zero.
+
+  Put \(B=\begin{pmatrix}X-a&-b\\ b&X-a\end{pmatrix}\).  Then
+  \(B^{\mathsf T}B=BB^{\mathsf T}=pI_2\).  Also
+  \(B(z)^{\mathsf T}(1,i)^{\mathsf T}=0\).  For each \(1\le j\le q\), let
+  \((r_1,r_2)\) be the two-row pair of \(OT\) in rows \(2j-1,2j\).  The matrix
+  \[
+    B^{\mathsf T}\begin{pmatrix}r_1\\r_2\end{pmatrix}
+  \]
+  vanishes at \(z\).  Since \(p\mid f\Longleftrightarrow f(z)=0\), all entries
+  are divisible by \(p\).  Define row vectors
+  \(m_1,m_2\in\Mat_{1\times n}(\Poly)\) by
+  \[
+    B^{\mathsf T}\begin{pmatrix}r_1\\r_2\end{pmatrix}
+      =
+    p\begin{pmatrix}m_1\\m_2\end{pmatrix}.
+  \]
+  Multiplying by \(B\) and using \(BB^{\mathsf T}=pI_2\), then cancelling \(p\),
+  gives
+  \[
+    \begin{pmatrix}r_1\\r_2\end{pmatrix}
+      =
+    B\begin{pmatrix}m_1\\m_2\end{pmatrix}.
+  \]
+
+  If \(N=2q\), applying this to all \(q\) two-row pairs of \(OT\), and placing
+  the obtained \(m_1,m_2\) in the same positions, gives
+  \[
+    OT=HM,\qquad H^{\mathsf T}H=pI_N,
+  \]
+  with \(M\in\Mat_{N\times n}(\Poly)\), where \(H\in\Mat_N(\Poly)\) is
+  block diagonal with \(q\) copies of \(B\).
+
+  If \(N=2q+1\), the last row of \(OT(z)\) is zero, so every entry in that row
+  is divisible by \(p\).  Together with the same \(q\) two-row blocks, this gives
+  \(OT=HM\), where
+  \[
+    H=\operatorname{diag}(\underbrace{B,\ldots,B}_{q\text{ copies}},p)
+  \]
+  and \(M\in\Mat_{N\times n}(\Poly)\).  This \(H\) satisfies
+  \[
+    H^{\mathsf T}H=\operatorname{diag}(pI_{2q},p^2).
+  \]
+\end{proof}
+
+\begin{lemma}[Even-row one-step descent for a no-real-root quadratic]
+\label{lem:no-real-root-even-row-one-step-en}
+  Let \(q,n\in\mathbb{N}\).
+  Let \(a,b\in\mathbb{R}\) with \(b\ne0\), and put
+  \(p=(X-a)^2+b^2\in\Poly\).
+  If \(A\in\Mat_n(\Poly)\) and \(T\in\Mat_{2q\times n}(\Poly)\) satisfy
+  \[
+    pA=T^{\mathsf T}T,
+  \]
+  then there is \(U\in\Mat_{2q\times n}(\Poly)\) such that
+  \[
+    A=U^{\mathsf T}U.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Apply the even-row case of Lemma~\ref{lem:two-row-block-construction-en} to \(T\).
+  We get a real orthogonal matrix \(O\in\Mat_{2q}(\mathbb{R})\), a polynomial matrix
+  \(U\in\Mat_{2q\times n}(\Poly)\), and \(H\in\Mat_{2q}(\Poly)\) such that
+  \[
+    OT=HU,\qquad H^{\mathsf T}H=pI_{2q}.
+  \]
+  Since \(O\) is orthogonal,
+  \[
+    pA=T^{\mathsf T}T
+      =(OT)^{\mathsf T}(OT)
+      =U^{\mathsf T}H^{\mathsf T}HU
+      =pU^{\mathsf T}U.
+  \]
+  Cancelling \(p\) gives \(A=U^{\mathsf T}U\).
+\end{proof}
+
+\begin{lemma}[No-real-root quadratic factor descent]
+\label{lem:no-real-root-quadratic-factor-descent-en}
+  Let \(n\in\mathbb{N}\).
+  Let \(p\in\Poly\) be an irreducible quadratic polynomial with no real root.
+  If \(A\in\Mat_n(\Poly)\) and \(T\in\Mat_n(\Poly)\) satisfy
+  \[
+    p^2A=T^{\mathsf T}T,
+  \]
+  then there is \(U\in\Mat_n(\Poly)\) such that
+  \[
+    A=U^{\mathsf T}U.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Completing the square gives \(p=c p_0\), where \(c\in\mathbb R^\times\)
+  and \(p_0=(X-a)^2+b^2\), \(b\ne0\).  Replacing \(T\) by \(T/c\) turns
+  \(p^2A=T^{\mathsf T}T\) into \(p_0^2A=(T/c)^{\mathsf T}(T/c)\).
+  Thus it suffices to treat \(p=(X-a)^2+b^2\).
+
+  If \(n\) is even, write \(n=2q\).  Applying
+  Lemma~\ref{lem:no-real-root-even-row-one-step-en} to \(pA\) and \(T\) gives
+  \(pA=M^{\mathsf T}M\) for some \(M\in\Mat_n(\Poly)\).  Applying the same
+  lemma once more to \(A\) and \(M\) gives \(A=U^{\mathsf T}U\).
+
+  Now suppose that \(n\) is odd, say \(n=2q+1\).
+  Apply the odd-row case of Lemma~\ref{lem:two-row-block-construction-en} to \(T\).
+  We get a real orthogonal matrix \(O\in\Mat_n(\mathbb{R})\),
+  \(M\in\Mat_n(\Poly)\), and \(H\in\Mat_n(\Poly)\) such that
+  \[
+    OT=HM,\qquad H^{\mathsf T}H=\operatorname{diag}(pI_{2q},p^2).
+  \]
+  Write \(M_{\mathrm{pair}}\)
+  for the first \(2q\) rows of \(M\), and \(M_{\mathrm{rem}}\) for the last row.
+  Using the orthogonality of \(O\), the hypothesis becomes
+  \[
+    p^2A
+      =(OT)^{\mathsf T}(OT)
+      =
+    p\,M_{\mathrm{pair}}^{\mathsf T}M_{\mathrm{pair}}
+    +p^2\,M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}.
+  \]
+  Hence
+  \[
+    p\bigl(A-M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}\bigr)
+      =
+    M_{\mathrm{pair}}^{\mathsf T}M_{\mathrm{pair}}.
+  \]
+  Apply Lemma~\ref{lem:no-real-root-even-row-one-step-en} to
+  \(A-M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}\) and \(M_{\mathrm{pair}}\).
+  This gives
+  \[
+    A-M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}
+      =
+    U_{\mathrm{pair}}^{\mathsf T}U_{\mathrm{pair}}
+  \]
+  for some \(U_{\mathrm{pair}}\in\Mat_{2q\times n}(\Poly)\).  Stacking
+  \(M_{\mathrm{rem}}\) below \(U_{\mathrm{pair}}\) gives
+  \(U\in\Mat_n(\Poly)\) with \(A=U^{\mathsf T}U\).
+\end{proof}
+
+\begin{lemma}[Denominator descent]\label{lem:denominator-descent-en}
+  Let \(n\in\mathbb{N}\).
+  Suppose \(A\in\Mat_n(\Poly)\) is positive semidefinite at every real point
+  and
+  \[
+    q^2A=T^{\mathsf T}T
+  \]
+  for some nonzero polynomial \(q\) and
+  \(T\in\Mat_n(\Poly)\). Then there exists
+  \(U\in\Mat_n(\Poly)\) such that
+  \[
+    A=U^{\mathsf T}U
+  \]
+\end{lemma}
+
+\begin{proof}
+  Choose such a representation with \(\deg q\) minimal. We show that this
+  minimal \(q\) must be constant. If \(q\) is not constant,
+  choose an irreducible factor \(p\) and write
+  \(q=pq_0\).  Rewrite the equality as
+  \[
+    p^2(q_0^2A)=T^{\mathsf T}T.
+  \]
+  If \(p\) has a real root, apply
+  Lemma~\ref{lem:real-root-factor-descent-en} to \(q_0^2A\).  If
+  \(p\) has no real root, then by the classification of irreducible real
+  polynomials \(p\) is quadratic, and we apply
+  Lemma~\ref{lem:no-real-root-quadratic-factor-descent-en} to
+  \(q_0^2A\).  In either case we get a polynomial matrix \(U\) such
+  that
+  \[
+    q_0^2A=U^{\mathsf T}U.
+  \]
+  Since \(\deg q_0<\deg(pq_0)=\deg q\), this contradicts the
+  minimality of \(q\). Hence \(q\) was constant. Since \(q\ne0\),
+  \(U=q^{-1}T\) is polynomial and \(A=U^{\mathsf T}U\).
+\end{proof}
+
+{\renewcommand{\restateprefix}{Restated; }\fullLineMatrixSOS*}
+
+\begin{proof}
+  First prove existence of a polynomial factor, without a degree bound,
+  by induction on the matrix size.  The case \(m=0\) is given by the empty
+  \(1\times0\) matrix.  Assume \(m>0\).  If \(\det P=0\), regard \(P\) as a linear map
+  \(\Poly^m\to\Poly^m\). Since \(\Poly\) is a PID, Smith normal form applies to
+  this map: there are unimodular matrices \(C,D\in\Mat_m(\Poly)\) such that
+  \[
+    DPC=\operatorname{diag}(s_1,\ldots,s_{m-1},0).
+  \]
+  Here unimodular means invertible over \(\Poly\), so the inverses also have
+  polynomial entries.  The matrix \(C\) is the change of basis in the domain,
+  and \(D\) is the change of basis in the codomain.  Since the last column of
+  the diagonal matrix is zero, if \(e_m\) is the last standard basis vector then
+  \[
+    DPCe_m=0.
+  \]
+  Because \(D\) is invertible over \(\Poly\), this gives \(PCe_m=0\).  Thus the
+  last column \(v=Ce_m\) of \(C\) lies in the kernel of \(P\).
+
+  From this point on we use only the domain change of basis \(C\) and transform
+  the quadratic form by congruence:
+  \[
+    B=C^{\mathsf T}PC.
+  \]
+  Since \(PC\) has zero last column and \(P\) is symmetric, the last row and
+  last column of \(B\) are zero. Thus
+  \[
+    B=
+    \begin{pmatrix}
+      B'&0\\
+      0&0
+    \end{pmatrix},
+  \]
+  where \(B'\in\Mat_{m-1}(\Poly)\) is again positive semidefinite at every real
+  point. By induction,
+  \[
+    B'=R'^{\mathsf T}R',
+    \qquad R'\in\Mat_{m\times(m-1)}(\Poly).
+  \]
+  Insert a zero last column to form
+  \(\bar R\in\Mat_{m\times m}(\Poly)\). Then
+  \[
+    B=\bar R^{\mathsf T}\bar R.
+  \]
+  Therefore
+  \[
+    P=(C^{-1})^{\mathsf T}BC^{-1}
+      =(\bar R C^{-1})^{\mathsf T}(\bar R C^{-1}).
+  \]
+  Finally add one zero row to \(\bar R C^{-1}\) to obtain the desired
+  \((m+1)\times m\) factor for \(P\).
+
+  If \(\det P\ne0\), consider
+  \[
+    \widetilde P=
+    \begin{pmatrix}
+      P&0\\
+      0&\det P
+    \end{pmatrix}.
+  \]
+  It is positive semidefinite on the real line and has square determinant:
+  \[
+    \det\widetilde P=(\det P)^2.
+  \]
+  The square-determinant result first gives a factorization
+  \(\widetilde P=S^{\mathsf T}S\) over \(\Frac\).  Clearing common
+  denominators gives \(q^2\widetilde P=T^{\mathsf T}T\) with \(T\) polynomial.
+  Applying denominator descent to \(\widetilde P\), we obtain a
+  polynomial matrix \(U\in\Mat_{(m+1)\times(m+1)}(\Poly)\) such that
+  \[
+    \widetilde P=U^{\mathsf T}U.
+  \]
+  Split \(U\) into its first \(m\) columns and its last column:
+  \[
+    U=(R\mid c),
+    \qquad
+    R\in\Mat_{(m+1)\times m}(\Poly),\quad
+    c\in\Mat_{(m+1)\times1}(\Poly).
+  \]
+  Then
+  \[
+    U^{\mathsf T}U=
+    \begin{pmatrix}
+      R^{\mathsf T}R & R^{\mathsf T}c\\
+      c^{\mathsf T}R & c^{\mathsf T}c
+    \end{pmatrix}.
+  \]
+    The upper-left block of \(\widetilde P\) is \(P\), hence \(P=R^{\mathsf T}R\).
+
+  Finally compare degrees.  For each column \(j\),
+  \[
+    P_{jj}=\sum_\alpha R_{\alpha j}^2.
+  \]
+  Over the reals, the leading coefficients of nonzero squares are positive, so
+  the top-degree terms in the right hand side cannot cancel.  If the right hand
+  side is zero, then every \(R_{\alpha j}\) is zero and the bound is trivial.
+  Otherwise
+  \[
+    \deg P_{jj}=\max_\alpha 2\deg R_{\alpha j}.
+  \]
+  Since \(\deg P_{jj}\le2d\), every entry in the \(j\)-th column of \(R\) has
+  degree at most \(d\).
+
+  This proves the bounded SOS factorization from positive semidefiniteness.
+  A bounded SOS factorization gives a Gram representation by expanding the
+  factor \(R\) in the monomial basis of Definition~\ref{def:sos-gram-en} and
+  taking the coefficient Gram matrix \(C^{\mathsf T}C\). Conversely, if
+  \(P=Q_{d,m}^{\mathsf T}YQ_{d,m}\) with \(Y\) positive semidefinite, then for
+  every real \(x\) and vector \(v\),
+  \[
+    v^{\mathsf T}Q_{d,m}(x)^{\mathsf T}YQ_{d,m}(x)v
+    =(Q_{d,m}(x)v)^{\mathsf T}Y(Q_{d,m}(x)v)\ge0.
+  \]
+  Thus the Gram representation implies positive semidefiniteness on the real
+  line.
+\end{proof}
+
+\section{Half-Line Corollary}
+
+{\renewcommand{\restateprefix}{Restated; }\halfLineMarkovLukacs*}
+
+\begin{proof}
+After translating \(X\mapsto X+a\), it suffices first to treat \(a=0\).  If
+\(M(x)\psd\) for all \(x\ge0\), then \(P(t)=M(t^2)\) is positive semidefinite
+for every real \(t\). The full-line theorem gives
+\[
+  M(t^2)=R(t)^{\mathsf T}R(t).
+\]
+Here \(R\) has \(m+1\) rows.
+Write each entry of \(R\) as an even part plus \(t\) times an even part:
+\[
+  R(t)=A(t^2)+tB(t^2).
+\]
+Since \(M(t^2)\) is even in \(t\), the odd cross term vanishes, and
+\[
+  M(X)=A(X)^{\mathsf T}A(X)+X B(X)^{\mathsf T}B(X).
+\]
+The matrices \(A\) and \(B\) are obtained from the even and odd parts of the
+same rows of \(R\), so both still have \(m+1\) rows.  This proves the existence
+of the required half-line SOS certificate.  Since the entries of \(P(t)=M(t^2)\) have degree at
+most \(2d\), the full-line theorem gives \(R(t)\) with entry degree at most
+\(d\).  The even-odd decomposition then gives entry-degree bounds \(r(d)\) for
+\(A\) and \(s(d)\) for \(B\).
+
+The Gram form is obtained from this bounded SOS representation.  Expanding the
+entries of \(A\) and \(B\) in the monomial bases gives
+\[
+  A=CQ_{r(d),m},\qquad B=DQ_{s(d),m}.
+\]
+Therefore \(A^{\mathsf T}A\) and \(B^{\mathsf T}B\) are represented by the
+Gram matrices \(C^{\mathsf T}C\) and \(D^{\mathsf T}D\), which are positive
+semidefinite.
+
+Returning from the translation gives the general \(a\) statement, with weight
+\(X-a\).  Conversely, a Gram certificate is positive semidefinite on \(x\ge a\)
+because \(Y_1,Y_2\psd\), sums of positive semidefinite matrices remain positive
+semidefinite, and the scalar weight \(x-a\) is nonnegative on the half-line.
+Hence positive semidefiniteness, the SOS certificate, and the Gram certificate
+are equivalent.
+\end{proof}
+
+\section{Finite-Interval Corollary}
+
+{\renewcommand{\restateprefix}{Restated; }\finiteIntervalMarkovLukacs*}
+
+\begin{proof}
+For a finite interval \([a,b]\), first pull back to the unit interval:
+\[
+  N(t)=M(a+(b-a)t).
+\]
+The equivalence between positivity of \(M\) on \([a,b]\) and positivity of
+\(N\) on \([0,1]\) is the affine reindexing theorem.
+
+For \(N\) on \([0,1]\), use the half-line chart
+\[
+  t=\frac{u}{1+u},\qquad u\ge0.
+\]
+This chart identifies the half-line with \(0\le t<1\).  The endpoint \(t=1\)
+is not hit directly, but the identities obtained below are polynomial
+identities, so equality on \(0\le t<1\) extends to the endpoint as well.
+If the entries of \(N\) have degree at most \(2d\), then
+\[
+  H(u)=(1+u)^{2d}N\!\left(\frac{u}{1+u}\right)
+\]
+is a polynomial matrix of entry degree at most \(2d\), and it is positive
+semidefinite on the half-line.  The half-line Markov--Lukacs theorem gives
+\[
+  H(u)=A(u)^T A(u)+u\,B(u)^T B(u).
+\]
+Here the entries of \(A\) have degree at most \(d\), and the entries of \(B\)
+have degree at most \(\max(d-1,0)\).
+
+  If \(d>0\), dehomogenizing by \(u=t/(1-t)\) gives the even-bound certificate
+  \[
+    N(t)=\widetilde A(t)^T\widetilde A(t)
+      +t(1-t)\widetilde B(t)^T\widetilde B(t),
+  \]
+  where
+  \[
+    \widetilde A(t)=(1-t)^dA\!\left(\frac{t}{1-t}\right),\qquad
+    \widetilde B(t)=(1-t)^{d-1}B\!\left(\frac{t}{1-t}\right).
+  \]
+  The degree bounds on \(A\) and \(B\) make \(\widetilde A\) and
+  \(\widetilde B\) polynomial matrices of degrees at most \(d\) and \(d-1\),
+  respectively.  If \(d=0\), then \(B=0\) for degree reasons and the same form
+  holds without the second term.
+  The weight \(t(1-t)\) is what becomes \((X-a)(b-X)\) after returning to the
+  original interval.
+  For an odd bound \(2d+1\), the same chart gives
+\[
+  H(u)=(1+u)^{2d+1}N\!\left(\frac{u}{1+u}\right),
+\]
+which has entry degree at most \(2d+1\) and is positive semidefinite on the
+half-line.  The half-line theorem gives
+\[
+  H(u)=A(u)^TA(u)+uB(u)^TB(u).
+\]
+  The entries of \(B\) have degree at most \(d\).  The apparent degree \(d+1\)
+  term in \(A\) vanishes as follows.  For each column \(j\), the diagonal entry
+  satisfies
+  \[
+    H_{jj}=\sum_\alpha A_{\alpha j}^2
+      +u\sum_\alpha B_{\alpha j}^2.
+  \]
+  The second term has degree at most \(2d+1\), and \(H_{jj}\) also has degree at
+  most \(2d+1\).  Thus the coefficient of \(u^{2d+2}\) is the sum of the
+  squares of the \(u^{d+1}\)-coefficients of the \(A_{\alpha j}\), and this sum
+  is zero.  Over \(\mathbb{R}\), a sum of squares is zero only when every term
+  is zero, so every \(A_{\alpha j}\) has degree at most \(d\).
+  Dehomogenization then gives
+  \[
+    N(t)=t\,\widetilde B(t)^T\widetilde B(t)
+      +(1-t)\,\widetilde A(t)^T\widetilde A(t),
+  \]
+  with both dehomogenized factors of degree at most \(d\).
+Finally, the affine inverse \(t=(X-a)/(b-a)\) turns this into
+\[
+  M(X)=T_0(X)+(X-a)(b-X)T_1(X),
+\]
+in the even case, and
+\[
+  M(X)=(X-a)T_0(X)+(b-X)T_1(X)
+\]
+in the odd case, after absorbing the positive scalar factors into the SOS
+matrices.
+The Gram versions follow by expanding these bounded SOS factors in the
+monomial basis and collecting coefficients into positive semidefinite Gram
+matrices.
+Conversely, a Gram certificate is positive semidefinite on the
+interval because the Gram matrices are positive semidefinite and the weights
+\(X-a\), \(b-X\), and \((X-a)(b-X)\) are nonnegative on \([a,b]\).
+Thus, in each parity case, positive semidefiniteness, the SOS certificate, and
+the Gram certificate are equivalent.
+\end{proof}
+
+\appendix
+
+\section{Lean Correspondence}
+
+The proof above corresponds to the following Lean theorems.  Names below
+are relative to the namespace \lean{MatrixSOS}.  The standalone Tsen theorem
+requires \lean{import MatrixSOS.Proof.Tsen}; the main certificate API is
+available through \lean{import MatrixSOS}.
+\begin{itemize}
+  \item The auxiliary ordered Hahn field is \lean{RationalHahnField}, and its
+    square-root source is \lean{rationalHahnNonnegSquareStatement}.
+  \item The binary sum-of-squares representation is proved as
+    \lean{fracPoly_binaryForm_represents_one_of_nonnegWhereDefined}.
+  \item The common-zero lemma over an algebraically closed field is public as
+    \lean{algebraicallyClosed_commonZero_of_homogeneous}.
+  \item The \(K(X)\) case of Tsen's theorem, namely that \(K(X)\) is \(C_1\)
+    for algebraically closed \(K\), is public as
+    \lean{Tsen.algebraicallyClosed_ratFunc_c1FieldStatement}.
+  \item The full-line theorem is
+    \lean{fullLine_posSemidef_iff_sos}.
+  \item The bounded right half-line SOS theorem is
+    \lean{Certificates.HalfLine.posSemidefOn_Ici_iff_sos}, and its
+    Gram form is \lean{Certificates.HalfLine.posSemidefOn_Ici_iff_gram}.
+  \item The finite-interval Markov--Lukacs SOS certificates are
+    \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsSOS_even}
+    and \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsSOS_odd}.
+  \item Their bounded Gram forms are
+    \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsGram_even}
+    and \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsGram_odd}.
+  \item The scalar and constant special cases are
+    \lean{Certificates.Scalar.polynomial_nonnegOn_univ_iff_sos} and
+    \lean{Certificates.Constant.posSemidef_iff_exists_gram}.
+\end{itemize}
+
+\section{Preparation for the proof of Lemma~\ref{lem:binary-sum-two-squares-en}}
+
+The rest of the appendix proves Lemma~\ref{lem:binary-sum-two-squares-en}.
+{\renewcommand{\restateprefix}{Restated; }\binarySumTwoSquares*}
+Here \(\NNwd(r)\) means that, for a representation \(r=f/g\) with \(g\ne0\),
+\[
+  g(x)\ne0 \quad\Longrightarrow\quad \frac{f(x)}{g(x)}\ge0
+  \qquad (x\in\mathbb{R}).
+\]
+
+The proof of Lemma~\ref{lem:binary-sum-two-squares-en} proceeds as follows.
+First, the rational-exponent Hahn field is used to detect a real negative value
+inside a nonnegative-square-closed ordered field.  An ordered field \(K\) is
+nonnegative-square-closed if every nonnegative element is a square:
+\[
+  0\le u \quad\Longrightarrow\quad \exists v\in K,\ u=v^2.
+\]
+This negative-value detection shows that a rational function which maps to a
+nonnegative element in every nonnegative-square-closed ordered extension must
+satisfy \(\NNwd\).  Finally, Tsen's theorem and the splitting criterion for
+Pfister forms give a local-global principle for ternary quadratic forms, from
+which Lemma~\ref{lem:binary-sum-two-squares-en} follows.
+
+We use the following quadratic-form terminology in this appendix.  Over a field
+\(F\), the diagonal quadratic form
+\[
+  \langle c_1,\ldots,c_n\rangle
+\]
+is the form
+\[
+  (x_1,\ldots,x_n)\longmapsto c_1x_1^2+\cdots+c_nx_n^2.
+\]
+It is isotropic if it has a nonzero zero.
+
+\section{Rational Hahn Field}\label{sec:hahn-start-en}
+
+We write \(\RationalHahn\) for the Hahn series field
+\[
+  \Hahn=\mathbb{R}((t^{\mathbb{Q}}))
+\]
+whose series have well-ordered support, equipped with the lexicographic
+order.  For background on Hahn series, see
+Hahn~\cite{Hahn1907} and Ribenboim~\cite{RibenboimFields}. If
+\[
+  f=\sum a_qt^q\ne0,
+\]
+then \(\ord(f)\) is the smallest exponent in its support and
+\(\lc(f)=a_{\ord(f)}\). Positivity means \(\lc(f)>0\).
+
+\begin{theorem}[Nonnegative elements are squares]
+  If \(f\in\RationalHahn\) and \(f\ge0\), then there exists
+  \(g\in\RationalHahn\) such that \(f=g^2\).
+\end{theorem}
+
+\begin{proof}
+  The case \(f=0\) is immediate. Suppose \(f>0\). Let \(\alpha=\ord(f)\) and
+  \(c=\lc(f)>0\). Choose \(a\in\mathbb{R}\) with \(a^2=c\). Put
+  \[
+    u=c^{-1}t^{-\alpha}f.
+  \]
+  Then \(u\) has leading term \(1\), and all terms of \(u-1\) have positive
+  order. Hence the Hahn-series binomial expansion
+  \[
+    z=\sum_{n\ge0}\binom{1/2}{n}(u-1)^n
+  \]
+  is defined.  If \(u=1\), take \(z=1\).  Otherwise let
+  \(\epsilon=\ord(u-1)>0\).  The \(n\)-th power has order \(n\epsilon\),
+  which is unbounded in \(\mathbb Q\).  Thus below any fixed rational bound
+  only finitely many powers contribute, and their supports form a finite
+  union of well-ordered sets.  The total support is therefore well ordered,
+  and each exponent receives contributions from only finitely many summands. The usual binomial
+  coefficient calculation then gives \(z^2=u\). Therefore
+  \[
+    g=a\,t^{\alpha/2}z
+  \]
+  satisfies \(g^2=f\).
+\end{proof}
+
+\section{Detecting Negative Values}
+
+For each real \(x\), the map \(X\mapsto x+t\) sends \(\Frac\) into the Laurent
+series field around \(x\), and then into \(\RationalHahn\) by embedding integer
+exponents into rational exponents.  Nonzero polynomials remain nonzero
+under this substitution, so their images can be inverted; this defines a
+unital field embedding and hence the required algebra structure.
+
+\begin{lemma}\label{lem:negative-polynomial-hahn-en}
+  If \(p\in\Poly\) and \(p(x)<0\) for some \(x\in\mathbb{R}\), then there is a
+  \(\Frac\)-algebra structure on \(\RationalHahn\) for which the image of \(p\)
+  is negative.
+\end{lemma}
+
+\begin{proof}
+  Expand \(p\) around \(x\):
+  \[
+    p(x+T)=p(x)+a_1T+a_2T^2+\cdots.
+  \]
+  The constant term is negative, so this Laurent series is negative in the
+  lexicographic order. The order is preserved by the embedding into rational
+  Hahn series.
+\end{proof}
+
+\begin{lemma}\label{lem:nonneg-in-all-extensions-implies-nonneg-where-defined-en}
+  If \(r\in\Frac\) maps to a nonnegative element in every nonnegative-square-closed ordered
+  \(\Frac\)-algebra, then \(r\) is nonnegative at every real point where it is
+  defined.
+\end{lemma}
+
+\begin{proof}
+  If \(r=f/g\) were negative at a point \(x\) with \(g(x)\ne0\), then
+  \(f(x)g(x)<0\). Lemma~\ref{lem:negative-polynomial-hahn-en} applied to the
+  polynomial \(fg\) would give a nonnegative-square-closed ordered
+  \(\Frac\)-algebra in which \(fg<0\), and hence
+  \(r<0\), contradicting the hypothesis.
+\end{proof}
+
+\begin{lemma}[Nonnegative rational functions as sums of two squares]
+\label{lem:nonneg-rational-function-sum-two-squares-en}
+  If \(r\in\Frac\) is nonnegative at all real points where it is defined, then
+  \[
+    r=u^2+v^2
+  \]
+  for some \(u,v\in\Frac\).
+\end{lemma}
+
+\begin{proof}
+  Write \(r=f/g\), hence \(r=fg/g^2\). The polynomial \(fg\) is nonnegative on
+  the real line. A nonnegative real polynomial factors into even real roots and
+  positive quadratic factors. The even-root part is a square, and each positive
+  quadratic factor is a sum of two squares. The identity
+  \[
+    (u^2+v^2)(s^2+t^2)=(us-vt)^2+(ut+vs)^2
+  \]
+  shows inductively over the factors that \(fg\) is a sum of two squares.
+  Dividing by \(g^2\) gives the result.
+\end{proof}
+
+\section{A Ternary Local-Global Step}\label{sec:ternary-local-global-en}
+
+Let \(F=\Frac\). The proof uses a local-global statement for
+\[
+  X^2=aY^2+bZ^2.
+\]
+The ordered extensions used here are nonnegative-square-closed ordered fields
+equipped with an \(F\)-algebra structure.
+
+\subsection{\texorpdfstring{The \(k(X)\) Case of Tsen's Theorem}{The k(X) Case of Tsen's Theorem}}
+
+\begin{definition}
+  A field \(E\) is \(C_1\) if every homogeneous polynomial over \(E\) of
+  degree \(d\ge1\) in more than \(d\) variables has a nontrivial zero over
+  \(E\).
+\end{definition}
+
+The form of Tsen's theorem used here is the rational-function-field case: if \(k\) is
+algebraically closed, then \(k(X)\) is \(C_1\).  A broader one-variable function
+field version is also known as Tsen's theorem, but this proof only uses the
+rational function field case.  The actual application is still narrower:
+four-variable quadratic forms over \(\mathbb{C}(X)\).  We use the following
+common-zero lemma behind the standard proof.
+
+In this subsection, the height \(\operatorname{ht}(\mathfrak p)\) of a prime
+ideal \(\mathfrak p\) is the supremum of the lengths \(n\) of chains
+\[
+  \mathfrak p_0\subsetneq\cdots\subsetneq\mathfrak p_n=\mathfrak p
+\]
+of prime ideals.  The height \(\operatorname{ht}(J)\) of an ideal \(J\) is
+defined as the minimum height of a minimal prime ideal containing \(J\).
+\footnote{Equivalently, it is the minimum height among all prime ideals
+containing \(J\). This equivalence follows easily from lemmas available in
+mathlib.}
+This is the definition corresponding to Lean's \(\lean{Ideal.height}\).
+
+\begin{theorem}[Hilbert's Nullstellensatz]\label{thm:nullstellensatz-en}
+  Let \(k\) and \(K\) be fields, assume that \(K\) is algebraically closed, and
+  assume that \(K\) is a \(k\)-algebra.  Put \(A=k[Z_1,\ldots,Z_M]\).  For any
+  ideal \(J\subset A\), let \(V_K(J)\subset K^M\) be its \(K\)-valued common
+  zero locus, and let \(I_k(V_K(J))\) be the ideal of \(k\)-coefficient
+  polynomials vanishing on that set. Then
+  \[
+    I_k(V_K(J))=\sqrt J.
+  \]
+\end{theorem}
+
+\begin{proof}
+  In the formalization this is exactly the mathlib theorem
+  \begin{quote}
+    \lean{MvPolynomial.vanishingIdeal_zeroLocus_eq_radical}
+  \end{quote}
+\end{proof}
+
+\begin{lemma}[Vanishing ideal of the origin]\label{lem:vanishing-ideal-origin-en}
+  Let \(k\) be a field, and let \(A=k[Z_1,\ldots,Z_M]\). Then
+  \[
+    I(\{0\})=(Z_1,\ldots,Z_M).
+  \]
+\end{lemma}
+
+\begin{proof}
+  A polynomial \(f\in A\) vanishes at the origin if and only if its constant
+  coefficient is zero.  The variable ideal \((Z_1,\ldots,Z_M)\) is exactly the
+  set of polynomials with zero constant coefficient.  Hence the two ideals are
+  equal.
+\end{proof}
+
+\begin{lemma}[Radicals do not change height]\label{lem:height-radical-en}
+  If \(A\) is a commutative ring and \(J\subset A\) is an ideal, then
+  \[
+    \operatorname{ht}(J)=\operatorname{ht}(\sqrt J).
+  \]
+\end{lemma}
+
+\begin{proof}
+  This is formalized as \(\lean{ideal_height_radical}\).
+  A prime ideal \(\mathfrak p\) contains \(J\) if and only if it contains
+  \(\sqrt J\).  Therefore the minimal prime ideals containing \(J\) and those
+  containing \(\sqrt J\) are the same, so the minimum of their heights is the
+  same.
+\end{proof}
+
+\begin{lemma}[Height of the variable ideal]\label{lem:height-ideal-of-vars-en}
+  Let \(k\) be a field, and let \(A=k[Z_1,\ldots,Z_M]\). Then
+  \[
+    \operatorname{ht}(Z_1,\ldots,Z_M)=M.
+  \]
+\end{lemma}
+
+\begin{proof}
+  This is formalized as \(\lean{idealOfVars_height_fintype}\).
+  The maximality of the variable ideal is obtained directly from the fact that
+  it is the kernel of the constant-coefficient map \(k[Z_1,\ldots,Z_M]\to k\).
+  The empty-variable case is immediate.  For the induction step, Lean identifies
+  a multivariable polynomial ring with one more variable as a polynomial ring in
+  one variable over the previous multivariable polynomial ring, using
+  \(\lean{MvPolynomial.optionEquivLeft}\).  Heights are transported across this
+  equivalence by \(\lean{RingEquiv.height_map}\), and the height increases by
+  one by \(\lean{Polynomial.height_eq_height_add_one}\).  Iterating this over a
+  finite set of variables gives height \(M\).
+\end{proof}
+
+\begin{theorem}[Krull's height theorem]\label{thm:krull-height-en}
+  Let \(A\) be a Noetherian commutative ring, and let \(J\subset A\) be a
+  proper ideal. Then
+  \[
+    \operatorname{ht}(J)\le \operatorname{spanFinrank}(J).
+  \]
+  Here \(\operatorname{spanFinrank}(J)\) is mathlib's finite spanning rank,
+  \(\lean{Submodule.spanFinrank}\).  Since ideals in a Noetherian ring are
+  finitely generated, this is the minimum cardinality of a finite generating
+  set of \(J\).
+\end{theorem}
+
+\begin{proof}
+  Lean uses the mathlib theorem \(\lean{Ideal.height_le_spanFinrank}\).
+\end{proof}
+
+\begin{lemma}[Common-zero lemma]\label{lem:projective-common-zero-en}
+  Let \(k\) be algebraically closed, and let
+  \(P_1,\ldots,P_r\in k[Z_1,\ldots,Z_M]\) be homogeneous polynomials of positive
+  degree.  If \(r<M\), then they have a common nontrivial zero in \(k^M\).
+\end{lemma}
+
+\begin{proof}
+  Let \(I=(P_1,\ldots,P_r)\). Suppose, for contradiction, that the only common
+  zero is the origin.
+
+  In Lean, \(\lean{MvPolynomial.zeroLocus_span}\) first identifies the zero
+  locus of \(I\) with the common zero locus of the generators \(P_i\).  Since
+  the \(P_i\) are homogeneous of positive degree, the following mathlib lemmas
+  show that the origin is always a zero:
+  \begin{quote}
+    \lean{MvPolynomial.IsHomogeneous.coeff_eq_zero}\\
+    \lean{MvPolynomial.constantCoeff_eq}\\
+    \lean{MvPolynomial.aeval_zero}
+  \end{quote}
+
+  Applying Theorem~\ref{thm:nullstellensatz-en} to \(I\), and then using
+  Lemma~\ref{lem:vanishing-ideal-origin-en}, gives
+  \[
+    \sqrt I=(Z_1,\ldots,Z_M).
+  \]
+  By Lemma~\ref{lem:height-radical-en} and
+  Lemma~\ref{lem:height-ideal-of-vars-en}, the height of \(I\) is \(M\).
+
+  On the other hand, Theorem~\ref{thm:krull-height-en} applied to \(I\) gives
+  \(\operatorname{ht}(I)\le\operatorname{spanFinrank}(I)\).  In the
+  formalization,
+  \(\lean{Submodule.spanFinrank_span_le_ncard_of_finite}\) and
+  \(\lean{Fintype.card_range_le}\) bound this finite spanning rank by \(r\),
+  because \(I\) is generated by the \(r\) polynomials \(P_i\). Thus
+  \(M\le r\), contradicting \(r<M\).
+\end{proof}
+
+\begin{theorem}[The \(k(X)\) case of Tsen's theorem]
+\label{thm:tsen-rational-function-field-en}
+  If \(k\) is algebraically closed, then \(k(X)\) is \(C_1\).  In particular,
+  \(\mathbb{C}(X)\) is \(C_1\).
+\end{theorem}
+
+\begin{proof}
+  Let \(f(Y_1,\ldots,Y_n)\in k(X)[Y_1,\ldots,Y_n]\) be homogeneous of degree
+  \(d\), with \(n>d\).  After clearing denominators, assume that the
+  coefficients of \(f\) lie in \(k[X]\), and let \(D\) be the maximum \(X\)-degree
+  of those coefficients.  Put \(N=D\), and substitute unknown polynomials
+  \[
+    Y_i(X)=c_{i0}+c_{i1}X+\cdots+c_{iN}X^N .
+  \]
+  After substitution, every coefficient of the resulting polynomial in \(X\)
+  is a homogeneous degree-\(d\) polynomial in the \(c_{ij}\).  There are
+  \(n(N+1)\) variables.  The number of coefficient equations is at most
+  \(D+dN+1\), because each substituted term has \(X\)-degree at most \(D+dN\).
+  Since \(n>d\), for \(N=D\) one has \(n(N+1)>D+dN+1\).  Lemma
+  \ref{lem:projective-common-zero-en} therefore gives a nontrivial choice of
+  the \(c_{ij}\), hence a nontrivial zero of \(f\) over \(k(X)\).
+\end{proof}
+
+\subsection{Pfister Forms and the Ternary Local-Global Step}
+
+\begin{lemma}\label{lem:ternary-local-global-en}
+  Let \(a,b\in F^\times\). If \(X^2=aY^2+bZ^2\) has a nontrivial solution over
+  every nonnegative-square-closed ordered field equipped with an \(F\)-algebra
+  structure, then it has a nontrivial solution over \(F\).
+\end{lemma}
+
+\begin{proof}
+  Consider the associated two-fold Pfister form
+  \[
+    \pi=\langle 1,-a,-b,ab\rangle.
+  \]
+  Over \(F(i)\simeq\mathbb{C}(X)\),
+  Theorem~\ref{thm:tsen-rational-function-field-en} gives isotropy of the
+  four-variable quadratic form \(\pi\).  Write a nonzero isotropic vector as \(u+iv\), with \(u,v\in F^4\).
+  Its real and imaginary parts give
+  \(\pi(u)=\pi(v)\) and \(B_\pi(u,v)=0\), where \(B_\pi\) is the associated
+  symmetric bilinear form.  If this common value is zero, one of \(u,v\)
+  is already a nonzero \(F\)-rational isotropic vector.
+  Otherwise the common value is \(c\ne0\), so \(u,v\) span a nonsingular
+  plane with diagonal form \(\langle c,c\rangle\).  Diagonalizing its
+  orthogonal complement gives \(\langle c,c,d,e\rangle\).
+  Since \(\det\pi=a^2b^2\) and determinants under congruence differ by a
+  nonzero square, \(de=s^2\) for some \(s\ne0\).  Multiplying the last
+  basis vector by \(d/s\) changes its coefficient to \(d\).
+  Thus the form is transformed into
+  \[
+    \langle c,c,d,d\rangle.
+  \]
+  The remaining diagonal entries are nonzero, since the Pfister form is
+  nonsingular.
+  The local isotropy hypothesis implies that this diagonal form is isotropic
+  over every nonnegative-square-closed ordered field equipped with an
+  \(F\)-algebra structure. For nonnegative-square-closed ordered fields this is
+  equivalent to nonnegativity of \(-cd\): in a nonzero zero of
+  \(c(u_1^2+u_2^2)+d(u_3^2+u_4^2)\), the first sum of squares is nonzero,
+  giving \(-c/d=(u_3^2+u_4^2)/(u_1^2+u_2^2)\ge0\).
+  Conversely a square root \(r^2=-cd\) gives the zero \((1,0,r/d,0)\).
+  Lemma~\ref{lem:nonneg-in-all-extensions-implies-nonneg-where-defined-en}
+  and Lemma~\ref{lem:nonneg-rational-function-sum-two-squares-en} show that
+  \(-cd\) is a sum of two squares in \(F\), say \(-cd=r^2+s^2\). Then
+  \((d,0,r,s)\) is an isotropic vector for \(\langle c,c,d,d\rangle\). It is
+  nonzero because \(d\ne0\). Transporting it back gives an isotropic vector for
+  \(\pi\) with coordinates in \(F\).
+  The two-fold Pfister splitting criterion~\cite{LamQuadraticForms} can here
+  be proved directly.  Let \((x,y,z,w)\) be such a nonzero zero and put
+  \(D=z^2-aw^2\), so \(x^2-ay^2=bD\).  If \(D=0\), either \((z,w)\ne(0,0)\)
+  gives \(a=(z/w)^2\), or \((x,y)\ne(0,0)\) gives \(a=(x/y)^2\).
+  In either case \(a\) is a square and the ternary equation has a nonzero
+  solution with \(Z=0\).  If \(D\ne0\), the identity
+  \[
+    (xz-a y w)^2-a(xw-yz)^2=(x^2-a y^2)(z^2-a w^2),
+  \]
+  gives the explicit nontrivial solution
+  \[
+    (X,Y,Z)=\left(\frac{xz-ayw}{D},\frac{xw-yz}{D},1\right)
+  \]
+  of \(X^2=aY^2+bZ^2\).  The ternary form used here is the subform
+  \(\langle1,-a,-b\rangle\); the conventional pure subform of \(\pi\)
+  is instead \(\langle-a,-b,ab\rangle\).
+\end{proof}
+
+\begin{lemma}[Making the first coordinate nonzero]
+\label{lem:first-coordinate-nonzero-en}
+  Let \(E\) be a field of characteristic \(0\), and let \(a,b\in E^\times\).
+  If \(x^2=ay^2+bz^2\) has a nontrivial solution over \(E\), then it has one
+  with \(x\ne0\).
+\end{lemma}
+
+\begin{proof}
+  If the original solution has \(x_0\ne0\), there is nothing to prove.  If
+  \(x_0=0\), then \(y_0,z_0\ne0\) and \(a y_0^2+b z_0^2=0\).  Set
+  \[
+    x=2ay_0,\qquad y=(a+1)y_0,\qquad z=(1-a)z_0 .
+  \]
+  Then \(x\ne0\), and
+  \[
+    a((a+1)y_0)^2+b((1-a)z_0)^2
+    =(2ay_0)^2+(1-a)^2(a y_0^2+b z_0^2)
+    =(2ay_0)^2.
+  \]
+\end{proof}
+
+{\renewcommand{\restateprefix}{Restated; }\binarySumTwoSquares*}
+
+\begin{proof}
+  First show that
+  \[
+    X^2=aY^2+bZ^2
+  \]
+  has a nontrivial solution over every nonnegative-square-closed ordered
+  \(F\)-algebra. By
+  Lemma~\ref{lem:nonneg-rational-function-sum-two-squares-en}, the functions
+  \(a\) and \(b\) are sums of two squares in \(F\). In any such ordered field,
+  sums of squares are nonnegative and the images of \(a,b\) are nonzero, hence
+  positive. Since nonnegative elements are squares, the image \(A\) of \(a\)
+  has a square root \(\alpha\), and
+  \[
+    (X,Y,Z)=(1,\alpha^{-1},0)
+  \]
+  is a nontrivial solution.
+  Lemma~\ref{lem:ternary-local-global-en} gives a nontrivial solution over
+  \(F\), and Lemma~\ref{lem:first-coordinate-nonzero-en} lets us choose it
+  with \(X\ne0\). Dividing by \(X\) gives \(u=Y/X\) and \(v=Z/X\), hence
+  \[
+    1=au^2+bv^2.
+  \]
+\end{proof}
+
+\begin{thebibliography}{99}
+
+\bibitem{HanselkaSinn}
+Christoph Hanselka and Rainer Sinn,
+\emph{Positive Semidefinite Univariate Matrix Polynomials},
+Mathematische Zeitschrift 292 (2019), no. 1--2, 83--101.
+
+\bibitem{BPSV}
+Grigoriy Blekherman, Daniel Plaumann, Rainer Sinn, and Cynthia Vinzant,
+\emph{Low-Rank Sum-of-Squares Representations on Varieties of Minimal Degree},
+International Mathematics Research Notices 2019, no. 1, 33--54.
+
+\bibitem{KlepSchweighofer}
+Igor Klep and Markus Schweighofer,
+\emph{Pure States, Positive Matrix Polynomials and Sums of Hermitian Squares},
+Indiana University Mathematics Journal 59 (2010), no. 3, 857--874.
+
+\bibitem{PowersReznick}
+Victoria Powers and Bruce Reznick,
+\emph{Polynomials That Are Positive on an Interval},
+Transactions of the American Mathematical Society 352 (2000), no. 10,
+4677--4692.
+
+\bibitem{LamQuadraticForms}
+Tsit-Yuen Lam,
+\emph{Introduction to Quadratic Forms over Fields},
+Graduate Studies in Mathematics, vol. 67, American Mathematical Society, 2005.
+
+\bibitem{LangAlgebra}
+Serge Lang,
+\emph{Algebra},
+Graduate Texts in Mathematics, vol. 211, revised third edition, Springer, 2002.
+
+\bibitem{EisenbudCA}
+David Eisenbud,
+\emph{Commutative Algebra with a View Toward Algebraic Geometry},
+Graduate Texts in Mathematics, vol. 150, Springer, 1995.
+
+\bibitem{Hahn1907}
+Hans Hahn,
+\emph{\"Uber die nichtarchimedischen Gr\"ossensysteme},
+Sitzungsberichte der Kaiserlichen Akademie der Wissenschaften, Wien,
+Mathematisch-Naturwissenschaftliche Klasse 116 (1907), 601--655.
+
+\bibitem{RibenboimFields}
+Paulo Ribenboim,
+\emph{The Theory of Classical Valuations},
+Springer Monographs in Mathematics, Springer, 1999.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,1778 @@
+\documentclass[uplatex,dvipdfmx]{jsarticle}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{thmtools,thm-restate}
+\usepackage{enumitem}
+\usepackage{seqsplit}
+\usepackage[dvipdfmx,unicode]{hyperref}
+\ExplSyntaxOn
+\ActivateGenericHook{package/after/otf}
+\ActivateGenericHook{package/after/ajmacros}
+\ExplSyntaxOff
+\usepackage{pxjahyper}
+\hypersetup{
+  pdftitle={一変数実対称多項式行列の SOS 分解と Markov--Lukacs 型証明書},
+  pdfauthor={selpo}
+}
+
+\newcommand{\Poly}{\mathbb{R}[X]}
+\newcommand{\Frac}{\mathbb{R}(X)}
+\newcommand{\RationalHahn}{\operatorname{RHahn}}
+\newcommand{\Hahn}{\mathbb{R}((t^{\mathbb{Q}}))}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\psd}{\succeq 0}
+\newcommand{\NNwd}{\operatorname{NNwd}}
+\newcommand{\lean}[1]{\texttt{\expandafter\seqsplit\expandafter{\detokenize{#1}}}}
+
+\newcommand{\restateprefix}{}
+\newtheoremstyle{matrixsosdefinition}
+  {3pt}{3pt}{\normalfont}{}{\bfseries}{.}{.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (\restateprefix#3)}}
+
+\theoremstyle{matrixsosdefinition}
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}[theorem]{補題}
+\newtheorem{definition}[theorem]{定義}
+\newtheorem{corollary}[theorem]{系}
+
+\renewcommand{\proofname}{証明}
+
+\title{一変数実対称多項式行列の SOS 分解と Markov--Lukacs 型証明書}
+\author{selpo}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{概要と主定理}
+
+この文書で形式化する中心結果は、Hanselka--Sinn~\cite{HanselkaSinn} の
+全直線上の行列 SOS 定理に対応する、全実直線上で半正定値な実対称一変数多項式行列の
+次数制限つき SOS 分解である。その系として、半直線上の
+Markov--Lukacs 型 SOS 証明書、有限区間上の Markov--Lukacs 型 SOS 証明書、
+スカラー版および定数行列版も得る。
+証明では、有理指数 Hahn 級数体を補助的な順序体として用いるが、主定理の主張自体は
+実係数多項式行列についてのものである。
+
+ここで SOS は ``sum of squares'' の略である。スカラーの場合は有限個の多項式平方の和を意味し、
+行列の場合はその自然な一般化として矩形多項式行列 \(R\) による分解
+\[
+  S=R^{\mathsf T}R
+\]
+を意味する。
+
+Markov--Lukacs 型表示とは、半直線や有限区間上の非負性を、区間上で非負な重みと
+SOS 項で表す形である。ここでは \(X\), \(X-a\), \(b-X\),
+\((X-a)(b-X)\) がその重みとして現れる。この古典的なスカラー版については、
+Powers--Reznick~\cite{PowersReznick} を参照されたい。行列多項式の
+positivity certificate の周辺文献としては
+Blekherman--Plaumann--Sinn--Vinzant~\cite{BPSV} や
+Klep--Schweighofer~\cite{KlepSchweighofer} も関連する。
+
+実対称行列 \(A\) に対し \(A\psd\) とは、任意の列ベクトル
+\(v\in\mathbb{R}^m\) について \(v^{\mathsf T}Av\ge0\) であることをいう。
+多項式行列 \(P\) について \(P(x)\psd\) と書くときは、実数 \(x\) で各成分を
+評価して得られる実対称行列がこの意味で半正定値であることを意味する。
+
+\begin{definition}[SOS 行列多項式と Gram 表現]\label{def:sos-gram}
+  \(m\in\mathbb{N}\) とする。
+  多項式行列 \(S\in\Mat_m(\Poly)\) が SOS 行列多項式であるとは、
+  ある自然数 \(\ell\) と多項式行列
+  \(R\in\Mat_{\ell\times m}(\Poly)\) により
+	  \[
+	    S=R^{\mathsf T}R
+	  \]
+	  と書けることをいう。このとき \(R\) を \(S\) の SOS 因子と呼ぶ。
+
+	  \(r,m\in\mathbb{N}\) に対し、
+	  \(Q_{r,m}\in\Mat_{(r+1)m\times m}(\Poly)\) を以下で定める。
+	  行は組 \((k,a)\)、\(0\le k\le r,\ 1\le a\le m\) で添字付け、
+	  列は \(1\le b\le m\) で添字付け、成分を
+  \[
+    (Q_{r,m})_{(k,a),b}=
+    \begin{cases}
+      X^k, & a=b,\\
+      0, & a\ne b
+    \end{cases}
+  \]
+	  とする。したがって、実行列 \(Y\in\Mat_{(r+1)m}(\mathbb{R})\) に対し
+	  \[
+	    Q_{r,m}^{\mathsf T}YQ_{r,m}
+	  \]
+	  は \(m\times m\) 多項式行列になる。さらに \(Y\) が対称なら、
+	  これは対称多項式行列である。
+
+  \(S\) が次数 \(e\) 以下の因子を持つ次数制限つき SOS であることは、
+	  ある実半正定値行列 \(Y\) により
+  \[
+    S=Q_{e,m}^{\mathsf T}YQ_{e,m}
+  \]
+  と書けることと同値である。これは、SOS 因子の各成分を
+  \(1,X,\ldots,X^e\) の基底で展開し、その係数を実行列にまとめることで得られる。
+  逆に、実半正定値行列 \(Y\) はスペクトル定理により \(Y=C^{\mathsf T}C\) と書けるので、
+  \(R=CQ_{e,m}\) が次数 \(e\) 以下の SOS 因子となる。
+\end{definition}
+
+\begin{restatable}[全直線上の行列 SOS 分解]{theorem}{fullLineMatrixSOS}\label{thm:full-line-matrix-sos}
+  \(m,d\in\mathbb{N}\) とし、\(P\in\Mat_m(\Poly)\) を対称行列とする。
+  \(P\) の各成分の次数が \(2d\) 以下であるとする。このとき次は同値である。
+  \begin{enumerate}[label=(\arabic*)]
+    \item 任意の \(x\in\mathbb{R}\) に対して \(P(x)\psd\) である。
+    \item 各成分の次数が \(d\) 以下の
+      \(R\in\Mat_{(m+1)\times m}(\Poly)\) が存在して
+      \[
+        P=R^{\mathsf T}R
+      \]
+      と書ける。
+    \item 実半正定値行列
+      \(Y\in\Mat_{(d+1)m}(\mathbb{R})\) が存在して
+      \[
+        P=Q_{d,m}^{\mathsf T}YQ_{d,m}
+      \]
+      と書ける。
+  \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[半直線上の Markov--Lukacs 型証明書]{theorem}{halfLineMarkovLukacs}
+  \(m,d\in\mathbb{N}\) とし、\(M\in\Mat_m(\Poly)\) を対称行列とし、
+  \(a\in\mathbb{R}\) とする。
+  \(M\) の各成分の次数が \(d\) 以下であるとする。
+  ここで
+  \[
+    r(d)=\left\lfloor\frac{d}{2}\right\rfloor,\qquad
+    s(d)=\left\lfloor\frac{\max(d-1,0)}{2}\right\rfloor
+  \]
+  と置く。
+  このとき次は同値である。
+  \begin{enumerate}[label=(\arabic*)]
+    \item 任意の \(x\ge a\) に対して \(M(x)\psd\) である。
+    \item \(A,B\in\Mat_{(m+1)\times m}(\Poly)\) が存在して
+      \[
+        M=A^{\mathsf T}A+(X-a)B^{\mathsf T}B
+      \]
+      と書ける。さらに \(A\) の各成分の次数は \(r(d)\) 以下、
+      \(B\) の各成分の次数は \(s(d)\) 以下に取れる。
+    \item 実半正定値行列
+      \(Y_1\in\Mat_{(r(d)+1)m}(\mathbb{R})\),
+      \(Y_2\in\Mat_{(s(d)+1)m}(\mathbb{R})\) が存在して
+      \[
+        M=
+        Q_{r(d),m}^{\mathsf T}Y_1Q_{r(d),m}
+        +
+        (X-a)\,Q_{s(d),m}^{\mathsf T}Y_2Q_{s(d),m}
+      \]
+      と書ける。
+  \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[有限区間上の Markov--Lukacs 型証明書]{theorem}{finiteIntervalMarkovLukacs}
+  \(m,d\in\mathbb{N}\) とし、\(M\in\Mat_m(\Poly)\) を対称行列とし、
+  \(a,b\in\mathbb{R}\), \(a<b\) とする。
+  \(d_-=\max(d-1,0)\) と置く。
+  \(M\) の各成分の次数が \(2d\) 以下なら、次は同値である。
+  \begin{enumerate}[label=(E\arabic*)]
+    \item 任意の \(x\in[a,b]\) に対して \(M(x)\psd\) である。
+    \item \(A,B\in\Mat_{(m+1)\times m}(\Poly)\) が存在して
+      \[
+        M=A^{\mathsf T}A+(X-a)(b-X)B^{\mathsf T}B
+      \]
+      と書ける。さらに \(A\) の各成分の次数は \(d\) 以下、
+      \(B\) の各成分の次数は \(d_-\) 以下に取れる。
+    \item 実半正定値行列
+      \(Y_0\in\Mat_{(d+1)m}(\mathbb{R})\),
+      \(Y_1\in\Mat_{(d_-+1)m}(\mathbb{R})\) が存在して
+      \[
+        M=
+        Q_{d,m}^{\mathsf T}Y_0Q_{d,m}
+        +(X-a)(b-X)\,Q_{d_-,m}^{\mathsf T}Y_1Q_{d_-,m}
+      \]
+      と書ける。
+  \end{enumerate}
+  \(M\) の各成分の次数が \(2d+1\) 以下なら、次は同値である。
+  \begin{enumerate}[label=(O\arabic*)]
+    \item 任意の \(x\in[a,b]\) に対して \(M(x)\psd\) である。
+    \item \(A,B\in\Mat_{(m+1)\times m}(\Poly)\) が存在して
+      \[
+        M=(X-a)A^{\mathsf T}A+(b-X)B^{\mathsf T}B
+      \]
+      と書ける。さらに \(A,B\) の各成分の次数は \(d\) 以下に取れる。
+    \item 実半正定値行列
+      \(Y_0,Y_1\in\Mat_{(d+1)m}(\mathbb{R})\) が存在して
+      \[
+        M=
+        (X-a)\,Q_{d,m}^{\mathsf T}Y_0Q_{d,m}
+        +(b-X)\,Q_{d,m}^{\mathsf T}Y_1Q_{d,m}
+      \]
+      と書ける。
+  \end{enumerate}
+\end{restatable}
+
+\begin{corollary}[スカラー版と定数行列版]
+  \(d\in\mathbb{N}\) とし、実多項式 \(p\) が \(\deg p\le2d\) を満たすとする。
+  このとき、\(p\) が実直線上で非負であることは、次数 \(d\) 以下の
+  実多項式 \(q_1,q_2\) により
+  \(p=q_1^2+q_2^2\) と書けることと同値である。
+  また、\(m\in\mathbb{N}\) とし、\(A\in\Mat_m(\mathbb{R})\) とする。
+  \(A\) が実半正定値であることは、
+  ある \(R\in\Mat_{(m+1)\times m}(\mathbb{R})\) により
+  \(A=R^TR\) と書けることと同値である。
+\end{corollary}
+
+以下の証明では、次の有理関数補題を用いる。この補題の証明は
+Hahn 体、Tsen の定理、Pfister 形式を用いる部分であり、
+\ref{sec:hahn-start}--\ref{sec:ternary-local-global} で行う。
+
+補題の主張に現れる記号を先に定義する。有理関数 \(r\in\Frac\) が定義点で非負であることを
+\(\NNwd(r)\) と書く。具体的には、分母 \(g\ne0\) を持つある表示 \(r=f/g\) に対して、任意の
+\(x\in\mathbb{R}\) について
+\[
+  g(x)\ne0 \quad\Longrightarrow\quad \frac{f(x)}{g(x)}\ge0
+\]
+が成り立つことをいう。この条件は表示の取り方によらない。
+
+\begin{restatable}[二項平方和表示]{lemma}{binarySumTwoSquares}\label{lem:binary-sum-two-squares}
+  \(a,b\in\Frac^\times\) が \(\NNwd(a)\), \(\NNwd(b)\) を満たすなら、
+  \[
+    1=a u^2+b v^2
+  \]
+  を満たす \(u,v\in\Frac\) が存在する。
+\end{restatable}
+
+以下ではまず補題~\ref{lem:binary-sum-two-squares} を認めて、行列多項式の SOS 分解を証明する。
+補題~\ref{lem:binary-sum-two-squares} 自体の証明は付録で与える。
+
+\section{多項式行列の平方分解}\label{sec:matrix-factorization}
+
+\begin{lemma}[非零平方行列式を持つ半正定値行列の平方分解]
+\label{lem:square-det-psd-rational-factorization}
+  \(n\in\mathbb{N}\) とする。
+  \(A\in\Mat_n(\Poly)\) が任意の実点で半正定値であり、
+  \(\det A\ne0\) かつ \(\det A\) が \(\Frac\) 上で平方であるとする。
+  このとき
+  \[
+    A=S^{\mathsf T}S
+  \]
+  を満たす \(S\in\Mat_n(\Frac)\) が存在する。
+\end{lemma}
+
+\begin{proof}
+  \(n=0\) なら唯一の空行列が求める因子である。以下 \(n>0\) とする。
+  \(F=\Frac\) と書く。
+  対称行列 \(A\) を \(F\) 上で対角化すると、ある
+  \(C\in\operatorname{GL}_n(F)\) と \(d_1,\ldots,d_n\in F^\times\) が存在して
+  \[
+    C^{\mathsf T}AC=\operatorname{diag}(d_1,\ldots,d_n)
+  \]
+  となる。
+  非特異性により各 \(d_i\) は非零である。
+  \(C\) の極からなる有限集合の外では合同式を評価でき、各 \(d_i\) は非負である。
+  残る点でも \(d_i\) 自身が定義されていれば、その連続性と有限集合の補集合の稠密性から
+  非負性が従う。従って各 \(d_i\) は \(\NNwd(d_i)\) を満たす。
+  また、ある \(r\in F\) により \(\det A=r^2\) と書けるので、
+  \[
+    d_1\cdots d_n
+    =\det(C^{\mathsf T}AC)
+    =\det(C)^2\det(A)
+    =(\det(C)r)^2
+  \]
+  である。従って対角成分の積も \(F\) 上平方である。
+
+  まず二次元の場合の変形を説明する。
+  \(a,b\in\Frac^\times\) が \(\NNwd(a)\), \(\NNwd(b)\) を満たすなら、
+  補題~\ref{lem:binary-sum-two-squares} により
+  \[
+    1=a u^2+b v^2
+  \]
+  が得られる。このとき
+  \[
+    G=
+    \begin{pmatrix}u&-bv\\ v&au\end{pmatrix}\in\operatorname{GL}_2(F)
+  \]
+  と置くと、直接計算により
+  \[
+    G^{\mathsf T}
+    \begin{pmatrix}a&0\\0&b\end{pmatrix}
+    G
+    =
+    \begin{pmatrix}1&0\\0&ab\end{pmatrix}
+  \]
+  となる。ここで \(\det G=a u^2+b v^2=1\) である。
+  したがって、この操作は \(F\) 上の合同変換であり、二つの対角成分
+  \(a,b\) から平方成分 \(1\) を取り出し、残りの情報を積 \(ab\) にまとめる。
+  これを対角成分に順に適用すると、ある \(E\in\operatorname{GL}_n(F)\) が存在して
+  \[
+    E^{\mathsf T}\operatorname{diag}(d_1,\ldots,d_n)E
+    =
+    \operatorname{diag}(1,\ldots,1,d_1\cdots d_n)
+  \]
+  となる。最後の成分 \(d_1\cdots d_n\) は上で見たように \(F\) 上平方なので、
+  ある \(r'\in F\) により \(d_1\cdots d_n=(r')^2\) と書ける。
+  したがって右辺の対角形式は
+  \[
+    D^{\mathsf T}D,\qquad
+    D=\operatorname{diag}(1,\ldots,1,r')\in\Mat_n(F)
+  \]
+  そのものである。
+
+  以上より
+  \[
+    E^{\mathsf T}C^{\mathsf T}ACE=D^{\mathsf T}D
+  \]
+  である。\(P=CE\in\operatorname{GL}_n(F)\) と置くと
+  \(P^{\mathsf T}AP=D^{\mathsf T}D\) であるから、
+  \[
+    A=(DP^{-1})^{\mathsf T}(DP^{-1})
+  \]
+  となる。\(S=DP^{-1}\in\Mat_n(F)\) と置けば
+  \[
+    A=S^{\mathsf T}S
+  \]
+  が従う。
+\end{proof}
+
+\begin{lemma}[分母消去]\label{lem:clear-common-denominator}
+  \(A\in\Mat_n(\Poly)\) と \(S\in\Mat_n(\Frac)\) が
+  \(A=S^{\mathsf T}S\) を満たすとする。
+  このとき、ある非零多項式 \(q\in\Poly\) と
+  \(T\in\Mat_n(\Poly)\) が存在して
+  \[
+    q^2A=T^{\mathsf T}T
+  \]
+  が成り立つ。
+\end{lemma}
+
+\begin{proof}
+  \(A=S^{\mathsf T}S\) と書く。
+  \(S\) の全成分の共通分母を \(q\) とする。
+  \(T=qS\) は多項式係数行列であり、
+  \[
+    T^{\mathsf T}T=(qS)^{\mathsf T}(qS)=q^2S^{\mathsf T}S=q^2A
+  \]
+  である。
+\end{proof}
+
+\begin{lemma}[実根を持つ既約因子の降下]\label{lem:real-root-factor-descent}
+  \(p\in\Poly\) を既約多項式とし、ある \(\alpha\in\mathbb{R}\) について
+  \(p(\alpha)=0\) とする。
+  \(A\in\Mat_n(\Poly)\) と \(T\in\Mat_n(\Poly)\) が
+  \[
+    p^2A=T^{\mathsf T}T
+  \]
+  を満たすなら、ある \(U\in\Mat_n(\Poly)\) が存在して
+  \[
+    A=U^{\mathsf T}U
+  \]
+  が成り立つ。
+\end{lemma}
+
+\begin{proof}
+  対角成分を見ると
+  \[
+    p^2A_{ii}=\sum_k T_{ki}^2
+  \]
+  である。\(X=\alpha\) を代入すると左辺は \(0\) であり、
+  \[
+    \sum_k T_{ki}(\alpha)^2=0
+  \]
+  となる。これは実数の平方和なので、すべての \(k,i\) について
+  \(T_{ki}(\alpha)=0\) である。実根を持つ既約多項式 \(p\) は
+  \(X-\alpha\) の非零定数倍なので、各 \(T_{ki}\) は \(p\) で割れる。
+  \(T=pU\) と書けば
+  \(U\in\Mat_n(\Poly)\) であり、代入して
+  \[
+    p^2A=p^2U^{\mathsf T}U
+  \]
+  となる。\(p^2\) を約分して
+  \[
+    A=U^{\mathsf T}U
+  \]
+  を得る。
+\end{proof}
+
+\begin{lemma}[二行ブロック構成]\label{lem:two-row-block-construction}
+  \(q,n\in\mathbb{N}\) とし、\(N=2q\) または \(N=2q+1\) とする。
+  \(a,b\in\mathbb{R}\) かつ \(b\ne0\) とし、
+  \[
+    p=(X-a)^2+b^2\in\Poly
+  \]
+  とする。\(T\in\Mat_{N\times n}(\Poly)\) について
+  \(p\) が \(T^{\mathsf T}T\) の各成分を割ると仮定する。
+  このとき、ある実直交行列 \(O\in\Mat_N(\mathbb{R})\) と
+  \(H\in\Mat_N(\Poly)\)、\(M\in\Mat_{N\times n}(\Poly)\) が存在して、
+  次が成り立つ。
+  \(N=2q\) なら
+  \[
+    OT=HM,\qquad H^{\mathsf T}H=pI_N
+  \]
+  である。
+  \(N=2q+1\) なら
+  \[
+    OT=HM,\qquad
+    H^{\mathsf T}H=\operatorname{diag}(pI_{2q},p^2)
+  \]
+  である。
+\end{lemma}
+
+\begin{proof}
+  \(z=a-ib\in\mathbb{C}\) と置く。多項式 \(f\in\Poly\) について
+  \[
+    p\mid f \quad\Longleftrightarrow\quad f(z)=0
+  \]
+  である。
+
+  仮定から \(T(z)^{\mathsf T}T(z)=0\) である。
+  したがって \(T(z)\) の列ベクトルが生成する部分空間
+  \(L\subset\mathbb{C}^{N}\) は、複素双線形形式
+  \((x,y)\mapsto x^{\mathsf T}y\) に関して全等方である。
+
+  \(L\) に、通常の Hermitian 内積に関する正規直交基底
+  \(w_1,\ldots,w_r\) を取る。\(w_j=a_j+ib_j\) と書く。ただし
+  \(a_j,b_j\in\mathbb{R}^{N}\) である。\(L\) が上の双線形形式について全等方であることから、
+  実ベクトル
+  \[
+    \sqrt2\,\Re w_1,\ \sqrt2\,\Im w_1,\ldots,
+    \sqrt2\,\Re w_r,\ \sqrt2\,\Im w_r
+  \]
+  は \(\mathbb{R}^{N}\) の通常の Euclidean 内積に関する正規直交系である。
+  したがって \(2r\le N\) であり、\(r\le\lfloor N/2\rfloor=q\) である。
+  これを正規直交基底 \(e_1,\ldots,e_N\) に延長する。ただし
+  \(1\le j\le r\) では
+  \[
+    e_{2j-1}=\sqrt2\,\Re w_j,\qquad e_{2j}=\sqrt2\,\Im w_j
+  \]
+  とする。実直交行列 \(O\in\Mat_N(\mathbb{R})\) を、
+  \(a\) 行目が \(e_a^{\mathsf T}\) である行列として定める。
+
+  \(T(z)\) の任意の列ベクトル \(y\) は \(L\) の元なので
+  \(y=\sum_j\mu_jw_j\) と書ける。
+  \(e_{2j-1},e_{2j}\) で測った \(y\) の二成分は
+  \[
+    \left(\sqrt2\,a_j^{\mathsf T}y,\sqrt2\,b_j^{\mathsf T}y\right)
+    =\frac{\mu_j}{\sqrt2}(1,i)
+  \]
+  である。また \(2r<a\le N\) では \(e_a\) を \(L\) に直交するように取ったので、
+  \(OT(z)\) の第 \(a\) 行は \(0\) である。
+
+  ここで
+  \[
+    B=\begin{pmatrix}X-a&-b\\ b&X-a\end{pmatrix}
+  \]
+  と置くと
+  \[
+    B^{\mathsf T}B=BB^{\mathsf T}=pI_2
+  \]
+  である。また \(z=a-ib\) より \(B(z)^{\mathsf T}(1,i)^{\mathsf T}=0\) である。
+  したがって、\(1\le j\le q\) に対し、\(OT\) の第 \(2j-1,2j\) 行からなる二行ペアを
+  \((r_1,r_2)\) と書くと、
+  \[
+    B^{\mathsf T}\begin{pmatrix}r_1\\r_2\end{pmatrix}
+  \]
+  は \(z\) で値が消える。\(p\mid f\Longleftrightarrow f(z)=0\) より、
+  この二行行列の全成分は \(p\) で割れる。そこで行ベクトル
+  \(m_1,m_2\in\Mat_{1\times n}(\Poly)\) を
+  \[
+    B^{\mathsf T}\begin{pmatrix}r_1\\r_2\end{pmatrix}
+      =
+    p\begin{pmatrix}m_1\\m_2\end{pmatrix}
+  \]
+  により定める。両辺に左から \(B\) を掛け、\(BB^{\mathsf T}=pI_2\) を用いて
+  \(p\) を約分すると
+  \[
+    \begin{pmatrix}r_1\\r_2\end{pmatrix}
+      =
+    B\begin{pmatrix}m_1\\m_2\end{pmatrix}
+  \]
+  である。\(N=2q\) の場合、これを \(q\) 個の二行ペアすべてに適用すると、
+  対角ブロックに \(B\) を \(q\) 個並べた
+  \(H\in\Mat_N(\Poly)\) と、ある \(M\in\Mat_{N\times n}(\Poly)\) により
+  \[
+    OT=HM,\qquad H^{\mathsf T}H=pI_N
+  \]
+  と書ける。
+
+  \(N=2q+1\) の場合は、同じ二行ペアの商に加えて、最後の行も \(p\) で割れる。
+  したがって、ある \(M\in\Mat_{N\times n}(\Poly)\) と
+  \(H=\operatorname{diag}(\underbrace{B,\ldots,B}_{q\text{ 個}},p)\) により
+  \[
+    OT=HM
+  \]
+  と書ける。この \(H\) は
+  \[
+    H^{\mathsf T}H=\operatorname{diag}(pI_{2q},p^2)
+  \]
+  を満たす。
+\end{proof}
+
+\begin{lemma}[実根を持たない二次既約因子の偶数行一段降下]
+  \label{lem:no-real-root-even-row-one-step}
+  \(q,n\in\mathbb{N}\) とする。
+  \(a,b\in\mathbb{R}\) かつ \(b\ne0\) とし、
+  \(p=(X-a)^2+b^2\in\Poly\) とする。
+  \(A\in\Mat_n(\Poly)\) と \(T\in\Mat_{2q\times n}(\Poly)\) が
+  \[
+    pA=T^{\mathsf T}T
+  \]
+  を満たすなら、ある \(U\in\Mat_{2q\times n}(\Poly)\) が存在して
+  \[
+    A=U^{\mathsf T}U
+  \]
+  が成り立つ。
+\end{lemma}
+
+\begin{proof}
+  補題~\ref{lem:two-row-block-construction} の偶数行の場合を \(T\) に適用する。
+  すると、ある実直交行列 \(O\in\Mat_{2q}(\mathbb{R})\)、
+  多項式行列 \(U\in\Mat_{2q\times n}(\Poly)\)、
+  および \(H\in\Mat_{2q}(\Poly)\) が存在して
+  \[
+    OT=HU,\qquad H^{\mathsf T}H=pI_{2q}
+  \]
+  と書ける。
+  \(O\) は直交行列なので
+  \[
+    pA=T^{\mathsf T}T
+      =(OT)^{\mathsf T}(OT)
+      =U^{\mathsf T}H^{\mathsf T}HU
+      =pU^{\mathsf T}U
+  \]
+  となる。\(p\) を約分して \(A=U^{\mathsf T}U\) を得る。
+\end{proof}
+
+\begin{lemma}[実根を持たない二次既約因子の降下]
+  \label{lem:no-real-root-quadratic-factor-descent}
+  \(n\in\mathbb{N}\) とする。
+  \(p\in\Poly\) を実根を持たない既約二次式とする。
+  \(A\in\Mat_n(\Poly)\) と \(T\in\Mat_n(\Poly)\) が
+  \[
+    p^2A=T^{\mathsf T}T
+  \]
+  を満たすなら、ある \(U\in\Mat_n(\Poly)\) が存在して
+  \[
+    A=U^{\mathsf T}U
+  \]
+  が成り立つ。
+\end{lemma}
+
+\begin{proof}
+  平方完成により \(p=c p_0\)、\(c\in\mathbb R^\times\)、
+  \(p_0=(X-a)^2+b^2\)、\(b\ne0\) と書ける。
+  \(T\) を \(T/c\) に置き換えると、仮定は
+  \(p_0^2A=(T/c)^{\mathsf T}(T/c)\) となる。
+  従って \(p=(X-a)^2+b^2\) の場合を示せばよい。
+
+  \(n\) が偶数の場合、\(n=2q\) と書く。補題~\ref{lem:no-real-root-even-row-one-step} を
+  \(pA\) と \(T\) に適用すると、ある \(M\in\Mat_n(\Poly)\) により
+  \[
+    pA=M^{\mathsf T}M
+  \]
+  と書ける。もう一度同じ補題を \(A\) と \(M\) に適用して
+  \(A=U^{\mathsf T}U\) を得る。
+
+  次に \(n\) が奇数の場合を考える。\(n=2q+1\) と書く。
+  補題~\ref{lem:two-row-block-construction} の奇数行の場合を \(T\) に適用する。
+  すると、ある実直交行列 \(O\in\Mat_n(\mathbb{R})\)、
+  \(M\in\Mat_n(\Poly)\)、および \(H\in\Mat_n(\Poly)\) が存在して
+  \[
+    OT=HM,\qquad H^{\mathsf T}H=\operatorname{diag}(pI_{2q},p^2)
+  \]
+  と書ける。
+  \(M\) を最初の \(2q\) 行からなる部分 \(M_{\mathrm{pair}}\) と
+  最後の一行 \(M_{\mathrm{rem}}\) に分けると、
+  \(O\) の直交性と仮定から
+  \[
+    p^2A
+      =(OT)^{\mathsf T}(OT)
+      =
+    p\,M_{\mathrm{pair}}^{\mathsf T}M_{\mathrm{pair}}
+    +p^2\,M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}
+  \]
+  である。したがって
+  \[
+    p\bigl(A-M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}\bigr)
+      =
+    M_{\mathrm{pair}}^{\mathsf T}M_{\mathrm{pair}}.
+  \]
+  補題~\ref{lem:no-real-root-even-row-one-step} を
+  \(A-M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}\) と
+  \(M_{\mathrm{pair}}\) に適用すると、ある
+  \(U_{\mathrm{pair}}\in\Mat_{2q\times n}(\Poly)\) が存在して
+  \[
+    A-M_{\mathrm{rem}}^{\mathsf T}M_{\mathrm{rem}}
+      =
+    U_{\mathrm{pair}}^{\mathsf T}U_{\mathrm{pair}}
+  \]
+  となる。最後に \(U_{\mathrm{pair}}\) の下に \(M_{\mathrm{rem}}\) を一行加えた
+  行列を \(U\in\Mat_n(\Poly)\) とすれば
+  \[
+    A=U^{\mathsf T}U
+  \]
+  である。
+\end{proof}
+
+\begin{lemma}[分母降下]\label{lem:denominator-descent}
+  \(n\in\mathbb{N}\) とする。
+  \(A\in\Mat_n(\Poly)\) が任意の実点で半正定値であるとする。
+  さらに、ある非零多項式 \(q\) と多項式行列 \(T\in\Mat_n(\Poly)\) により
+  \[
+    q^2A=T^{\mathsf T}T
+  \]
+  と書けるなら、ある \(U\in\Mat_n(\Poly)\) が存在して
+  \[
+    A=U^{\mathsf T}U
+  \]
+  と書ける。
+\end{lemma}
+
+\begin{proof}
+  条件 \(q^2A=T^{\mathsf T}T\) を満たす表示の中で \(\deg q\) が最小のものを一つ選ぶ。
+  以下、この最小な \(q\) が定数であることを示す。
+  \(q\) が定数でなければ、\(q\) の既約因子 \(p\) を一つ取り、
+  \(q=pq_0\) と書ける。
+  等式を
+  \[
+    p^2(q_0^2A)=T^{\mathsf T}T
+  \]
+  と読み替える。
+
+  \(p\) が実根 \(\alpha\) を持つ一次因子の場合は、
+  補題~\ref{lem:real-root-factor-descent} を \(q_0^2A\) に適用する。
+  \(p\) が実根を持たない場合は、
+  実係数既約多項式の分類により \(p\) は二次式であり、
+  補題~\ref{lem:no-real-root-quadratic-factor-descent} を
+  \(q_0^2A\) に適用する。
+  いずれの場合も、ある多項式行列 \(U\) により
+  \[
+    q_0^2A=U^{\mathsf T}U
+  \]
+  と書ける。これは \(\deg q_0<\deg(pq_0)=\deg q\) なので、
+  \(\deg q\) の最小性に反する。
+  よって最小に取った \(q\) は既約因子を持たず、定数である。
+  定数 \(q\) は非零なので、\(U=q^{-1}T\) と置けば
+  \(A=U^{\mathsf T}U\) という多項式行列による平方分解が得られる。
+\end{proof}
+
+\section{全直線上の SOS 分解}
+
+{\renewcommand{\restateprefix}{再掲; }\fullLineMatrixSOS*}
+
+\begin{proof}
+  まず次数制限を課さずに多項式因子の存在を \(m\) に関する帰納法で示す。
+  \(m=0\) なら空の \(1\times0\) 行列が因子となる。以下 \(m>0\) とする。
+  \(\det P=0\) の場合、\(P\) を
+  \(\Poly^m\to\Poly^m\) の線形写像と見る。
+  ここで \(\Poly\) は PID なので、\(P\) が定める線形写像に Smith 標準形を適用できる。
+  すなわち、unimodular 行列 \(C,D\in\Mat_m(\Poly)\) が存在して
+  \[
+    DPC=\operatorname{diag}(s_1,\ldots,s_{m-1},0)
+  \]
+  と書ける。ここで unimodular とは、逆行列も \(\Poly\) 係数であることをいう。
+  \(C\) は定義域側の基底変換、\(D\) は値域側の基底変換である。
+  対角行列の最後の列は零なので、標準基底の最後のベクトルを \(e_m\) とすると
+  \[
+    DPCe_m=0
+  \]
+  である。\(D\) は \(\Poly\) 上で可逆だから \(PCe_m=0\) である。
+  従って、\(C\) の最後の列 \(v=Ce_m\) は \(Pv=0\) を満たす。
+
+  以後は、定義域側の基底変換 \(C\) だけを使って二次形式を合同変換する。
+  つまり
+  \[
+    B=C^{\mathsf T}PC
+  \]
+  である。\(PC\) の最後の列が零で、\(P\) は対称なので、\(B\) の最後の行と最後の列は
+  ともに零である。従って
+  \[
+    B=
+    \begin{pmatrix}
+      B'&0\\
+      0&0
+    \end{pmatrix}
+  \]
+  と書ける。ここで \(B'\in\Mat_{m-1}(\Poly)\) は再び全実点で半正定値である。
+  帰納法により
+  \[
+    B'=R'^{\mathsf T}R',
+    \qquad
+    R'\in\Mat_{m\times(m-1)}(\Poly)
+  \]
+  と書ける。対応する最後の列に零列を挿入して
+  \(\bar R\in\Mat_{m\times m}(\Poly)\) を作ると
+  \[
+    B=\bar R^{\mathsf T}\bar R
+  \]
+  である。したがって
+  \[
+    P=(C^{-1})^{\mathsf T}BC^{-1}
+      =(\bar R C^{-1})^{\mathsf T}(\bar R C^{-1})
+  \]
+  となる。最後に \(\bar R C^{-1}\) に零行を一つ加えれば、
+  \(P\) の \((m+1)\times m\) 多項式行列による平方分解が得られる。
+
+  \(\det P\ne0\) の場合は、一行一列を加えた
+  \[
+    \widetilde P=
+    \begin{pmatrix}
+      P&0\\
+      0&\det P
+    \end{pmatrix}
+  \]
+  を考える。半正定値行列の行列式は非負なので、任意の実点で
+  \(\widetilde P(x)\) も半正定値である。また
+    \[
+      \det\widetilde P=(\det P)^2
+    \]
+    は非零平方である。補題~\ref{lem:square-det-psd-rational-factorization} を適用して、
+  まず \(\Frac\) 係数行列 \(S\) による
+  \[
+    \widetilde P=S^{\mathsf T}S
+  \]
+  を得る。この時点では \(S\) は有理関数係数である。
+  補題~\ref{lem:clear-common-denominator} により、ある非零多項式 \(q\) と
+  多項式行列 \(T\) で
+  \[
+    q^2\widetilde P=T^{\mathsf T}T
+  \]
+  と書ける。補題~\ref{lem:denominator-descent} を \(\widetilde P\) に適用すると、
+  ある多項式行列 \(U\in\Mat_{(m+1)\times(m+1)}(\Poly)\) が存在して
+  \[
+    \widetilde P=U^{\mathsf T}U
+  \]
+  と書ける。
+
+    \(U\) を最初の \(m\) 列と最後の一列に分けて
+  \[
+    U=(R\mid c)
+  \]
+  と書く。ここで \(R\in\Mat_{(m+1)\times m}(\Poly)\),
+  \(c\in\Mat_{(m+1)\times1}(\Poly)\) である。このとき
+  \[
+    U^{\mathsf T}U=
+    \begin{pmatrix}
+      R^{\mathsf T}R & R^{\mathsf T}c\\
+      c^{\mathsf T}R & c^{\mathsf T}c
+    \end{pmatrix}
+  \]
+    である。一方、\(\widetilde P\) の左上ブロックは \(P\) であるから、左上ブロックを比較して
+    \(P=R^{\mathsf T}R\) が従う。この \(R\) は
+    \(\Mat_{(m+1)\times m}(\Poly)\) の元である。
+
+    最後に次数評価を行う。ここで \(R\) は多項式係数であり、\(P=R^{\mathsf T}R\) と書けている。
+    各列 \(j\) について
+    \[
+      P_{jj}=\sum_\alpha R_{\alpha j}^2
+    \]
+    である。実係数では、非零平方の最高次係数は正であるため、右辺の最高次項は相殺しない。
+    右辺が零である場合は、各 \(R_{\alpha j}\) が零であり、次数評価は自明である。
+    非零の場合は、最高次項の非相殺性により
+    \[
+      \deg P_{jj}=\max_\alpha 2\deg R_{\alpha j}
+    \]
+    である。仮定より \(\deg P_{jj}\le 2d\) なので、すべての \(\alpha,j\) について
+    \(\deg R_{\alpha j}\le d\) が従う。
+
+    以上で半正定値性から次数制限つき SOS 表示が得られた。SOS 表示から Gram 表示は、
+    因子 \(R\) を定義~\ref{def:sos-gram} の単項式基底で係数表示して
+    係数行列の積 \(C^{\mathsf T}C\) を取ればよい。逆に Gram 表示が与えられれば、
+    任意の実数 \(x\) と任意のベクトル \(v\) について
+    \[
+      v^{\mathsf T}Q_{d,m}(x)^{\mathsf T}YQ_{d,m}(x)v
+      =(Q_{d,m}(x)v)^{\mathsf T}Y(Q_{d,m}(x)v)\ge0
+    \]
+    である。従って Gram 表示は全実点での半正定値性を与える。
+\end{proof}
+
+\section{系：全直線から半直線へ}
+
+\begin{lemma}[半直線への変換]\label{lem:half-line-square-pullback}
+  \(M(x)\psd\) がすべての \(x\ge0\) で成り立つなら、
+  \[
+    P(t)=M(t^2)
+  \]
+  はすべての \(t\in\mathbb{R}\) で半正定値である。
+\end{lemma}
+
+\begin{proof}
+  任意の \(t\) について \(t^2\ge0\) であるから、仮定を \(x=t^2\) に適用すればよい。
+\end{proof}
+
+\begin{lemma}[偶奇分解]\label{lem:even-odd-sos-splitting}
+  \(M(t^2)=R(t)^{\mathsf T}R(t)\) と書けるなら、
+  ある多項式行列 \(A(X),B(X)\) が存在して
+  \[
+    M(X)=A(X)^{\mathsf T}A(X)+X B(X)^{\mathsf T}B(X)
+  \]
+  と書ける。
+\end{lemma}
+
+\begin{proof}
+  \(R(t)\) の各成分を偶奇分解し、
+  \[
+    R(t)=A(t^2)+tB(t^2)
+  \]
+  と書く。すると
+  \[
+  \begin{aligned}
+    R(t)^{\mathsf T}R(t)
+    &=
+    A(t^2)^{\mathsf T}A(t^2)
+    +t\{A(t^2)^{\mathsf T}B(t^2)+B(t^2)^{\mathsf T}A(t^2)\}\\
+    &\quad
+    +t^2 B(t^2)^{\mathsf T}B(t^2).
+  \end{aligned}
+  \]
+  左辺は \(M(t^2)\) であり、\(t\) の偶関数である。
+  従って奇数部分は消え、
+  \[
+    A^{\mathsf T}B+B^{\mathsf T}A=0
+  \]
+  である。偶数部分を \(X=t^2\) と書き直すと
+  \[
+    M(X)=A(X)^{\mathsf T}A(X)+X B(X)^{\mathsf T}B(X)
+  \]
+  が得られる。
+\end{proof}
+
+{\renewcommand{\restateprefix}{再掲; }\halfLineMarkovLukacs*}
+
+\begin{proof}
+  平行移動 \(X\mapsto X+a\) により、まず \(a=0\) の場合を示せばよい。
+  \(M(x)\psd\) が \(x\ge0\) で成り立つとする。
+  \(P(t)=M(t^2)\) と置けば、補題~\ref{lem:half-line-square-pullback} により
+  \(P(t)\psd\) は全実数 \(t\) で成り立つ。
+  定理~\ref{thm:full-line-matrix-sos} により
+    \[
+      P(t)=R(t)^{\mathsf T}R(t)
+    \]
+    を得る。ここで \(R\) の行数は \(m+1\) である。
+    補題~\ref{lem:even-odd-sos-splitting} により
+    \[
+      M(X)=A(X)^{\mathsf T}A(X)+X B(X)^{\mathsf T}B(X)
+    \]
+    と書ける。\(A\) と \(B\) は \(R\) の偶奇部分から作るので、どちらも同じく
+    \(m+1\) 行である。
+
+  これにより、求める半直線の SOS 表示の存在が示された。さらに \(P(t)=M(t^2)\) の成分次数は
+  \(2d\) 以下なので、全直線定理により \(R(t)\) の各成分の次数は \(d\) 以下に取れている。
+  その偶奇分解から、\(A\) の各成分の次数は \(r(d)\) 以下、
+  \(B\) の各成分の次数は \(s(d)\) 以下に取れる。
+
+  Gram 形は、この次数制限つき SOS 表示から得る。各成分を単項式基底で係数表示すると
+  \[
+    A=CQ_{r(d),m},\qquad B=DQ_{s(d),m}
+  \]
+  となる。従って
+  \[
+    A^{\mathsf T}A
+    =
+    Q_{r(d),m}^{\mathsf T}(C^{\mathsf T}C)Q_{r(d),m},
+  \]
+  \[
+    B^{\mathsf T}B
+    =
+    Q_{s(d),m}^{\mathsf T}(D^{\mathsf T}D)Q_{s(d),m}.
+    \]
+    \(C^{\mathsf T}C\) と \(D^{\mathsf T}D\) は実半正定値なので、
+    これが求める Gram 表現である。
+
+  一般の \(a\) では、上の \(a=0\) の表示を平行移動で戻すと
+  \(M=A^{\mathsf T}A+(X-a)B^{\mathsf T}B\) と
+  \[
+    M=
+    Q_{r(d),m}^{\mathsf T}Y_1Q_{r(d),m}
+    +(X-a)Q_{s(d),m}^{\mathsf T}Y_2Q_{s(d),m}
+  \]
+  を得る。
+
+  逆に、Gram 表現が与えられているとする。
+  \(Y_1,Y_2\psd\) なら任意の \(x\) で
+  \[
+    Q_{r(d),m}(x)^{\mathsf T}Y_1Q_{r(d),m}(x)\psd
+  \]
+  であり、\(x\ge a\) なら
+  \[
+    (x-a)\,Q_{s(d),m}(x)^{\mathsf T}Y_2Q_{s(d),m}(x)\psd
+  \]
+  でもある。半正定値行列の和は半正定値なので \(M(x)\psd\) が従う。
+  よって半正定値性、SOS 表示、Gram 表示は同値である。
+\end{proof}
+
+\section{有限区間版}
+
+{\renewcommand{\restateprefix}{再掲; }\finiteIntervalMarkovLukacs*}
+
+\begin{proof}
+有限区間 \([a,b]\) では、まず
+\[
+  N(t)=M(a+(b-a)t)
+\]
+によって単位区間 \([0,1]\) に引き戻す。
+これは affine reindexing であり、\(M\) の \([a,b]\) 上の半正定値性と
+\(N\) の \([0,1]\) 上の半正定値性は同値である。
+
+  次に、単位区間を半直線への chart
+  \[
+    t=\frac{u}{1+u},\qquad u\ge0
+  \]
+で扱う。この写像は \(u\ge0\) から \(0\le t<1\) への全単射である。
+端点 \(t=1\) は直接 chart には現れないが、以下で得る等式は多項式恒等式なので、
+\([0,1)\) 上で成り立てば \(t=1\) にも連続性、あるいは多項式恒等式としての一致により延長される。
+
+\(N\) の各成分の次数が \(2d\) 以下であるとき、
+\[
+  H(u)=(1+u)^{2d}N\!\left(\frac{u}{1+u}\right)
+\]
+は各成分の次数が \(2d\) 以下の多項式行列であり、半直線上で半正定値である。
+半直線 SOS 定理により
+  \[
+    H(u)=A(u)^T A(u)+u\,B(u)^T B(u)
+  \]
+  と書ける。ここで \(A\) の各成分の次数は \(d\) 以下、\(B\) の各成分の次数は
+  \(\max(d-1,0)\) 以下である。
+
+  \(d>0\) の場合、\(u=t/(1-t)\) によって脱同次化する。具体的には
+  \[
+    \widetilde A(t)=(1-t)^d A\!\left(\frac{t}{1-t}\right),\qquad
+    \widetilde B(t)=(1-t)^{d-1} B\!\left(\frac{t}{1-t}\right)
+  \]
+  と置く。次数制限により \(\widetilde A\) は次数 \(d\) 以下、
+  \(\widetilde B\) は次数 \(d-1\) 以下の多項式行列であり、偶数次数上限では
+    \[
+      N(t)=\widetilde A(t)^T\widetilde A(t)
+        +t(1-t)\widetilde B(t)^T\widetilde B(t)
+    \]
+    を得る。\(d=0\) の場合は、次数の理由から \(B=0\) として同じ形を第二項なしで得る。
+  重み \(t(1-t)\) は、元の区間で \((X-a)(b-X)\) に対応する。
+
+  奇数次数上限 \(2d+1\) では、同じ chart から
+  \[
+    H(u)=(1+u)^{2d+1}N\!\left(\frac{u}{1+u}\right)
+  \]
+  を作る。この \(H\) は各成分の次数が \(2d+1\) 以下で、半直線上で半正定値である。
+  半直線 SOS 定理により
+  \[
+    H(u)=A(u)^TA(u)+uB(u)^TB(u)
+  \]
+  を得る。このとき \(B\) の各成分の次数は \(d\) 以下であり、一方の因子
+  \(A\) は見かけ上は次数 \(d+1\) を持ち得る。
+  しかし \(H\) の各成分の次数は \(2d+1\) 以下である。各列 \(j\) について対角成分を見ると
+  \[
+    H_{jj}=\sum_\alpha A_{\alpha j}^2
+      +u\sum_\alpha B_{\alpha j}^2
+  \]
+  である。\(B\) の次数は \(d\) 以下なので、第二項の次数は高々 \(2d+1\) である。
+  したがって、\(H_{jj}\) の \(u^{2d+2}\) 係数は
+  \(A_{\alpha j}\) の \(u^{d+1}\) 係数の平方和だけから来る。左辺には
+  \(u^{2d+2}\) 項がないので、この平方和は 0 である。実数の平方和が 0 なら各項が
+  0 であるから、各 \(A_{\alpha j}\) の \(u^{d+1}\) 係数は消える。
+  これをすべての列 \(j\) に適用すると、\(A\) の各成分の次数も \(d\) 以下である。
+  したがって
+  \[
+    \widetilde A(t)=(1-t)^d A\!\left(\frac{t}{1-t}\right),\qquad
+    \widetilde B(t)=(1-t)^d B\!\left(\frac{t}{1-t}\right)
+  \]
+  はどちらも次数 \(d\) 以下の多項式行列になり、脱同次化により
+    \[
+      N(t)=t\,\widetilde B(t)^T\widetilde B(t)
+        +(1-t)\,\widetilde A(t)^T\widetilde A(t)
+    \]
+    を得る。
+    最後に affine inverse \(t=(X-a)/(b-a)\) で元の変数に戻し、
+正の定数倍を SOS 行列に吸収すると、偶数次数上限では
+\[
+  M(X)=T_0(X)+(X-a)(b-X)T_1(X)
+\]
+となり、奇数次数上限では
+\[
+  M(X)=(X-a)T_0(X)+(b-X)T_1(X)
+\]
+となる。
+Gram 版は、得られた次数制限つき SOS 因子を定義~\ref{def:sos-gram} の単項式基底で展開し、
+係数行列 \(Y_0,Y_1\) を作ることで得られる。逆向きは、Gram 行列が半正定値であり、
+区間上で各重み \(X-a\), \(b-X\), \((X-a)(b-X)\) が非負であることから従う。
+したがって各場合で、半正定値性、SOS 型証明書、Gram 型証明書は同値である。
+\end{proof}
+
+\appendix
+
+\section{形式化との対応}
+
+ここまでの証明は、Lean では次の theorem 群に対応している。以下の名前は
+\lean{MatrixSOS} 名前空間からの相対名である。独立した Tsen 定理には
+\lean{import MatrixSOS.Proof.Tsen} が必要であり、主な証明書 API は
+\lean{import MatrixSOS} で利用できる。
+\begin{itemize}
+  \item 有理指数 Hahn 体は \lean{RationalHahnField} であり、
+    その非負元平方性は \lean{rationalHahnNonnegSquareStatement} として証明される。
+  \item 二項平方和表示は
+    \lean{fracPoly_binaryForm_represents_one_of_nonnegWhereDefined} として証明される。
+  \item 代数閉体上の共通零点補題は
+    \lean{algebraicallyClosed_commonZero_of_homogeneous} として公開している。
+  \item Tsen の定理の \(K(X)\) 版、すなわち代数閉体 \(K\) に対して
+    \(K(X)\) が \(C_1\) 体であることは
+    \lean{Tsen.algebraicallyClosed_ratFunc_c1FieldStatement} として公開している。
+  \item 全直線版は \lean{fullLine_posSemidef_iff_sos} である。
+  \item 右半直線の bounded SOS 版は
+    \lean{Certificates.HalfLine.posSemidefOn_Ici_iff_sos}、
+    Gram 版は \lean{Certificates.HalfLine.posSemidefOn_Ici_iff_gram} である。
+  \item 有限区間の Markov--Lukacs 型 SOS 証明書は、偶数次数上限では
+    \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsSOS_even}、
+    奇数次数上限では
+    \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsSOS_odd} である。
+  \item 有限区間の bounded Gram 版は
+    \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsGram_even}
+    および
+    \lean{Certificates.Interval.posSemidefOn_Icc_iff_lukacsGram_odd} である。
+  \item スカラー版は
+    \lean{Certificates.Scalar.polynomial_nonnegOn_univ_iff_sos}、
+    定数行列版は
+    \lean{Certificates.Constant.posSemidef_iff_exists_gram} として形式化されている。
+\end{itemize}
+
+\section{補題~\ref{lem:binary-sum-two-squares} の証明準備}
+
+付録の残りでは補題~\ref{lem:binary-sum-two-squares} を証明する。
+{\renewcommand{\restateprefix}{再掲; }\binarySumTwoSquares*}
+ここで \(\NNwd(r)\) は、有理関数 \(r=f/g\) が任意の実数 \(x\) について
+\[
+  g(x)\ne0 \quad\Longrightarrow\quad \frac{f(x)}{g(x)}\ge0
+\]
+を満たすことを表す。
+
+補題~\ref{lem:binary-sum-two-squares} の証明は次の順で進む。
+まず有理指数 Hahn 体を用いて、実点で負になる多項式を
+非負元平方閉順序体の中でも負として検出する。ここで順序体 \(K\) が
+非負元平方閉であるとは、任意の \(u\in K\) について
+\[
+  0\le u \quad\Longrightarrow\quad \exists v\in K,\ u=v^2
+\]
+が成り立つことをいう。
+次に、この負値検出を用いて、有理関数がすべての非負元平方閉順序拡大で非負に写るなら
+\(\NNwd\) を満たすことを示す。最後に、Tsen の定理と Pfister 形式の分裂判定から
+三変数二次形式の局所大域原理を得て、補題~\ref{lem:binary-sum-two-squares} を導く。
+
+二次形式については次の用語を使う。体 \(F\) 上の対角二次形式
+\[
+  \langle c_1,\ldots,c_n\rangle
+\]
+とは
+\[
+  (x_1,\ldots,x_n)\longmapsto c_1x_1^2+\cdots+c_nx_n^2
+\]
+を表す。この二次形式が等方的であるとは、零でないベクトル \(x\in F^n\) が存在して
+\[
+  c_1x_1^2+\cdots+c_nx_n^2=0
+\]
+となることをいう。
+
+\section{有理指数 Hahn 体}\label{sec:hahn-start}
+
+ここで使う有理指数 Hahn 体 \(\RationalHahn\) は、Hahn 級数体
+\[
+  \Hahn=\left\{\sum_{q\in\mathbb{Q}} a_qt^q \,\middle|\,
+    \left\{q\in\mathbb{Q}\,\middle|\, a_q\ne0\right\}\text{ は well-ordered}\right\}
+\]
+に辞書式順序を入れたものである。Hahn 級数の背景については
+Hahn~\cite{Hahn1907} や Ribenboim~\cite{RibenboimFields} を参照されたい。
+
+\begin{definition}[辞書式順序]
+  非零 Hahn 級数 \(f=\sum a_qt^q\) の最小指数を \(\ord(f)\)、その係数を \(\lc(f)\) と書く。
+  \(f>0\) とは \(\lc(f)>0\) であることをいう。
+\end{definition}
+
+\begin{lemma}
+  \(\RationalHahn\) は辞書式順序により順序体である。
+\end{lemma}
+
+\begin{proof}
+  Hahn 級数体には、最小指数の係数の符号で決まる辞書式順序がある。
+  先頭項は和と積に対して通常の振る舞いをし、特に正元同士の和と積は正である。
+\end{proof}
+
+\begin{theorem}[有理指数 Hahn 体の非負元平方性]
+  \(f\in\RationalHahn\) かつ \(f\ge0\) なら、ある \(g\in\RationalHahn\) が存在して
+  \(f=g^2\) である。
+\end{theorem}
+
+\begin{proof}
+  \(f=0\) なら \(g=0\) とすればよい。以下 \(f>0\) とする。
+  \(f\) の先頭指数を \(\alpha\)、先頭係数を \(c\) と書く。順序の定義より \(c>0\) である。
+  \(c=a^2\) となる実数 \(a\) を取る。
+
+  まず
+  \[
+    u=c^{-1}t^{-\alpha}f
+  \]
+  とおくと、\(u\) は定数項 \(1\) を持ち、\(u-1\) のすべての指数は正である。
+  \(u=1\) なら \(z=1\) とすればよい。それ以外では
+  \(\epsilon=\ord(u-1)>0\) と置くと、第 \(n\) 冪の付値は \(n\epsilon\) であり、
+  これは \(\mathbb Q\) で非有界である。従って任意の有理上界より下に寄与する冪は有限個で、
+  その台の合併は整列集合の有限和集合である。全体の台も整列し、各指数に寄与する項も
+  有限個しかないため、Hahn 級数として
+  \[
+    z=\sum_{n\ge0}\binom{1/2}{n}(u-1)^n
+  \]
+  が定義される。通常の二項級数と同じ係数計算により、この級数は
+  \[
+    z^2=u
+  \]
+  を満たす。
+
+  よって
+  \[
+    g=a\,t^{\alpha/2}z
+  \]
+  と置けばよい。最後に
+  \[
+    g^2=a^2t^\alpha z^2=c\,t^\alpha u=f
+  \]
+  である。
+\end{proof}
+
+\section{負値の有理指数 Hahn 検出}
+
+次に、実点で負になる多項式を有理指数 Hahn 体の中で負として検出する。
+これは後で「すべての非負元平方閉順序拡大で正」という仮定に矛盾を作るための局所的な検出法である。
+
+ここで「\(\Frac\)-代数構造」とは、単位的環準同型
+\[
+  \Frac\longrightarrow K
+\]
+を指定することをいう。今回 \(K=\RationalHahn\) とする場合、実数 \(x\) ごとに
+\[
+  \iota_x:\Frac\longrightarrow\RationalHahn
+\]
+を
+\[
+  \iota_x(c)=c\quad(c\in\mathbb{R}),\qquad
+  \iota_x(X)=x+t
+\]
+で定める。これは有理関数を \(x\) のまわりで Laurent 展開し、
+その Laurent 級数を整数指数の有理指数 Hahn 級数として見る写像である。
+非零多項式は非零 Laurent 級数に写るので、分母は Laurent 級数体の中で反転できる。
+以下の補題で用いる \(\Frac\)-代数構造は、この \(\iota_x\) である。
+
+\begin{lemma}\label{lem:negative-polynomial-hahn}
+  \(p\in\Poly\)、\(x\in\mathbb{R}\) が \(p(x)<0\) を満たすなら、
+  ある \(\Frac\)-代数構造を入れた \(\RationalHahn\) において、\(p\) の像は負である。
+\end{lemma}
+
+\begin{proof}
+  \(p\) を \(x\) のまわりで展開する。
+  \[
+    p(x+T)=p(x)+a_1T+a_2T^2+\cdots
+  \]
+  であり、定数項 \(p(x)\) は負である。
+  したがって Laurent 級数 \(p(x+T)\) は、辞書式順序で負である。
+
+  Laurent 級数体 \(\mathbb{R}((T))\) は、整数指数を有理数指数へ埋め込むことで \(\RationalHahn\) に入る。
+  また、辞書式順序はこの埋め込みで保たれる。
+
+  一方、有理関数体 \(\mathbb{R}(X)\) から \(\mathbb{R}((T))\) へは、
+  \(X\mapsto x+T\) による Laurent 展開で写せる。これを \(\RationalHahn\) への埋め込みと合成すれば、
+  \(\RationalHahn\) に \(\Frac\)-代数構造が入る。その構造の下で \(p\) の像は上の Laurent 展開の像であり、
+  負である。
+\end{proof}
+
+\begin{lemma}\label{lem:negative-polynomial-nonneg-square-closed}
+  実多項式 \(p\) がある実点で負になるなら、ある非負元平方閉順序体 \(K\) と
+  \(K\) 上の \(\Frac\)-代数構造が存在して、\(p\) の像は \(K\) で負である。
+\end{lemma}
+
+\begin{proof}
+  補題~\ref{lem:negative-polynomial-hahn} の \(K\) として \(\RationalHahn\) 自身を取ればよい。
+  有理指数 Hahn 級数の非負元平方性により、\(\RationalHahn\) は必要な非負元平方閉順序体の条件を満たす。
+\end{proof}
+
+\section{非負元平方閉順序体での非負性から定義点での非負性へ}
+
+ここからは有理関数の符号に関する補題を使う。
+有理関数 \(r\in\Frac\) が定義点で非負であることを \(\NNwd(r)\) と書く。
+具体的には、分母 \(g\ne0\) を持つある表示 \(r=f/g\)
+に対して、任意の \(x\in\mathbb{R}\) について
+\[
+  g(x)\ne0 \quad\Longrightarrow\quad \frac{f(x)}{g(x)}\ge0
+\]
+が成り立つことをいう。この条件は表示の取り方によらない。
+
+\begin{lemma}\label{lem:nonneg-in-all-extensions-implies-nonneg-where-defined}
+  \(r\in\Frac\) が任意の非負元平方閉順序体 \(K\) と任意の \(\Frac\)-代数構造に対して非負に写るなら、
+  \(\NNwd(r)\) である。
+\end{lemma}
+
+\begin{proof}
+  反対に、\(\NNwd(r)\) でないとする。
+  \(r=f/g\) と書くと、ある実数 \(x\) が存在して
+  \[
+    g(x)\ne0,\qquad \frac{f(x)}{g(x)}<0
+  \]
+  となる。このとき
+  \[
+    f(x)g(x)<0
+  \]
+  である。補題~\ref{lem:negative-polynomial-nonneg-square-closed} を多項式 \(fg\) に適用すると、ある非負元平方閉順序体 \(K\) 上で
+  \(f g\) の像が負になる。
+
+  一方、\(g(x)\ne0\) に対応する構成では \(g\) の像は非零であり、
+  \(r=f/g\) の符号は \(fg\) の符号と同じ矛盾を与える。
+  つまり、すべての非負元平方閉順序体上で \(r\) が非負に写るという仮定に反して、ある非負元平方閉順序体上で
+  \(r<0\) が得られる。従って \(\NNwd(r)\) である。
+\end{proof}
+
+\begin{lemma}[一変数非負有理関数の平方和]\label{lem:nonneg-rational-function-sum-two-squares}
+  \(r\in\Frac\) が \(\NNwd(r)\) を満たせば、
+  \[
+    r=u^2+v^2
+  \]
+  を満たす \(u,v\in\Frac\) が存在する。
+\end{lemma}
+
+\begin{proof}
+  \(r=f/g\) と書き、
+  \[
+    r=\frac{fg}{g^2}
+  \]
+  と分母を平方にする。したがって \(fg\) が実数上で非負な多項式であることを示せばよい。
+  \(g(x)\ne0\) では \(f(x)/g(x)\ge0\) なので \(f(x)g(x)\ge0\) である。
+  \(g(x)=0\) の点では連続性により同じ不等式が従う。
+
+  実多項式 \(h\) が全実数上で非負なら、実根はすべて偶数重根であり、
+  実根を持たない二次既約因子は正の二次式である。
+  そのような二次式は
+  \[
+    \alpha\{(X-\beta)^2+\gamma^2\}\qquad(\alpha>0,\ \gamma\ne0)
+  \]
+  と書けるので二つの平方の和である。
+  偶数重根から来る因子は一つの平方である。
+  また
+  \[
+    (u^2+v^2)(s^2+t^2)=(us-vt)^2+(ut+vs)^2
+  \]
+  であるから、因子の個数に関する帰納法により、非負多項式全体も二つの平方の和である。
+  よって \(fg=p^2+q^2\) と書け、
+  \[
+    r=\left(\frac{p}{g}\right)^2+\left(\frac{q}{g}\right)^2
+  \]
+  が得られる。
+\end{proof}
+
+\section{三変数二次形式の局所大域原理}\label{sec:ternary-local-global}
+
+補題~\ref{lem:nonneg-in-all-extensions-implies-nonneg-where-defined} は、三変数二次形式
+\[
+  X^2-aY^2-bZ^2
+\]
+の局所大域原理に使われる。ここで \(a,b\in\Frac\) である。
+
+\subsection{\texorpdfstring{Tsen の定理の \(k(X)\) 版}{Tsen の定理の k(X) 版}}
+
+\begin{definition}[\(C_1\) 体]
+  体 \(E\) が \(C_1\) 体であるとは、任意の次数 \(d\ge1\) の斉次多項式
+  \[
+    f(Y_1,\ldots,Y_n)\in E[Y_1,\ldots,Y_n]
+  \]
+  が、変数の個数 \(n>d\) のとき、\(E^n\) に非自明零点を持つことをいう。
+  ここで非自明零点とは、全成分が同時には \(0\) でない零点のことである。
+\end{definition}
+
+この節で用いる Tsen の定理は、代数閉体 \(k\) について \(k(X)\) が \(C_1\) 体である、
+という有理関数体の場合である。より広く、代数閉体上の一変数関数体が \(C_1\) 体である
+という形も Tsen の定理として知られるが、本証明では \(k(X)\) の場合だけを使う。
+さらに実際の適用は、\(\mathbb{C}(X)\) 上の四変数二次形式に限られる。
+以下では、まずその背後にある共通零点の存在補題を示し、それを用いて
+\(k(X)\) の \(C_1\) 性を導く。
+
+以後、素イデアル \(\mathfrak p\) の高さ \(\operatorname{ht}(\mathfrak p)\) とは、
+\(\mathfrak p_0\subsetneq\cdots\subsetneq\mathfrak p_n=\mathfrak p\)
+という素イデアルの鎖の長さ \(n\) の上限をいう。イデアル \(J\) の高さ
+\(\operatorname{ht}(J)\) は、\(J\) を含む極小素イデアルの高さの最小値として定義する。
+\footnote{これは \(J\) を含む素イデアル全体にわたる高さの最小値と同値である。
+この同値性は mathlib にある補題から容易に従う。}
+これは Lean の \(\lean{Ideal.height}\) に対応する定義である。
+
+\begin{theorem}[Hilbert の零点定理]\label{thm:nullstellensatz}
+  \(k,K\) を体とし、\(K\) は代数閉体で、\(K\) は \(k\)-代数であるとする。
+  \(A=k[Z_1,\ldots,Z_M]\) とし、\(J\subset A\) を任意のイデアルとする。
+  \(V_K(J)\subset K^M\) を \(J\) の \(K\)-値共通零点集合とし、
+  \(I_k(V_K(J))\) をその上で消える \(k\)-係数多項式全体のイデアルとする。このとき
+  \[
+    I_k(V_K(J))=\sqrt J
+  \]
+  が成り立つ。
+\end{theorem}
+
+\begin{proof}
+  Lean では mathlib の \lean{MvPolynomial.vanishingIdeal_zeroLocus_eq_radical}
+  をそのまま用いる。
+\end{proof}
+
+\begin{lemma}[原点の消失イデアル]\label{lem:vanishing-ideal-origin}
+  \(k\) を体とし、\(A=k[Z_1,\ldots,Z_M]\) とする。このとき
+  \[
+    I(\{0\})=(Z_1,\ldots,Z_M)
+  \]
+  である。
+\end{lemma}
+
+\begin{proof}
+  多項式 \(f\in A\) が原点で消えることは、\(f\) の定数項が \(0\) であることと同値である。
+  一方、変数イデアル \((Z_1,\ldots,Z_M)\) は、定数項を持たない多項式全体からなる。
+  したがって両者は一致する。
+\end{proof}
+
+\begin{lemma}[radical は高さを変えない]\label{lem:height-radical}
+  可換環 \(A\) のイデアル \(J\) について、
+  \[
+    \operatorname{ht}(J)=\operatorname{ht}(\sqrt J)
+  \]
+  である。
+\end{lemma}
+
+\begin{proof}
+  Lean ではこの補題を \(\lean{ideal_height_radical}\) として証明している。
+  素イデアル \(\mathfrak p\) が \(J\) を含むことと \(\sqrt J\) を含むことは同値である。
+  したがって、\(J\) を含む極小素イデアルと \(\sqrt J\) を含む極小素イデアルは同じであり、
+  その高さの最小値も同じである。
+\end{proof}
+
+\begin{lemma}[変数イデアルの高さ]\label{lem:height-ideal-of-vars}
+  \(k\) を体とし、\(A=k[Z_1,\ldots,Z_M]\) とする。このとき
+  \[
+    \operatorname{ht}(Z_1,\ldots,Z_M)=M
+  \]
+  である。
+\end{lemma}
+
+\begin{proof}
+  形式化では \(\lean{idealOfVars_height_fintype}\) として証明している。
+  まず定数項写像
+  \(k[Z_1,\ldots,Z_M]\to k\) の核が \((Z_1,\ldots,Z_M)\) であることから、
+  変数イデアルが極大であることを得る。
+  空の変数集合では自明である。変数を一つ増やす段階では、
+  \(k[Z_1,\ldots,Z_M,Z_{M+1}]\) を
+  \((k[Z_1,\ldots,Z_M])[Z_{M+1}]\) と見るために
+  \(\lean{MvPolynomial.optionEquivLeft}\) を使い、環同型による移送を
+  \(\lean{RingEquiv.height_map}\) で行う。そのうえで
+  \(\lean{Polynomial.height_eq_height_add_one}\) により高さが \(1\) 増えることを使う。
+  これを有限集合の帰納法で繰り返すと、高さは変数の個数 \(M\) に等しい。
+\end{proof}
+
+\begin{theorem}[Krull の高さ定理]\label{thm:krull-height}
+  \(A\) を Noether 可換環とし、\(J\subset A\) を真イデアルとする。このとき
+  \[
+    \operatorname{ht}(J)\le \operatorname{spanFinrank}(J)
+  \]
+  である。ここで \(\operatorname{spanFinrank}(J)\) は、mathlib の
+  \(\lean{Submodule.spanFinrank}\) に対応する有限生成階数である。
+  Noether 環では \(J\) は有限生成なので、これは \(J\) を生成する有限集合の
+  最小サイズと一致する。
+\end{theorem}
+
+\begin{proof}
+  Lean では mathlib の \lean{Ideal.height_le_spanFinrank} をそのまま用いる。
+\end{proof}
+
+\begin{lemma}[共通零点補題]\label{lem:projective-common-zero}
+  \(k\) を代数閉体とする。
+  \(P_1,\ldots,P_r\in k[Z_1,\ldots,Z_M]\) を正次数の斉次多項式とする。
+  もし \(r<M\) なら、これらは \(k^M\) に非自明共通零点を持つ。
+\end{lemma}
+
+\begin{proof}
+  \(I=(P_1,\ldots,P_r)\) とおく。
+  非自明共通零点が存在しないと仮定すると、\(I\) の零点集合は原点だけである。
+
+  形式化では、まず \(\lean{MvPolynomial.zeroLocus_span}\) により \(I\) の零点を
+  生成元 \(P_i\) の共通零点として扱う。各 \(P_i\) は正次数斉次なので、次により
+  原点は必ず零点である。
+  \begin{quote}
+    \lean{MvPolynomial.IsHomogeneous.coeff_eq_zero}\\
+    \lean{MvPolynomial.constantCoeff_eq}\\
+    \lean{MvPolynomial.aeval_zero}
+  \end{quote}
+
+  定理~\ref{thm:nullstellensatz} を \(I\) に適用し、
+  さらに補題~\ref{lem:vanishing-ideal-origin} を用いると、零点集合が原点だけであることから
+  \[
+    \sqrt I=(Z_1,\ldots,Z_M)
+  \]
+  である。補題~\ref{lem:height-radical} と補題~\ref{lem:height-ideal-of-vars} により、
+  \(I\) の高さは \(M\) である。
+
+  一方、定理~\ref{thm:krull-height} を \(I\) に適用すると
+  \[
+    \operatorname{ht}(I)\le \operatorname{spanFinrank}(I)
+  \]
+  である。形式化では
+  \begin{quote}
+    \lean{Submodule.spanFinrank_span_le_ncard_of_finite}\\
+    \lean{Fintype.card_range_le}
+  \end{quote}
+  により、\(I\) が \(r\) 個の元で生成されることから
+  \(\operatorname{spanFinrank}(I)\le r\) と評価する。従って
+  \(M\le r\) となり、仮定 \(r<M\) に矛盾する。
+\end{proof}
+
+\begin{theorem}[Tsen の定理の \(k(X)\) の場合]\label{thm:tsen-rational-function-field}
+  代数閉体 \(k\) について、\(k(X)\) は \(C_1\) 体である。
+  特に \(\mathbb{C}(X)\) は \(C_1\) 体である。
+\end{theorem}
+
+\begin{proof}
+  \(K=k(X)\) とし、次数 \(d\) の斉次多項式
+  \(f(Y_1,\ldots,Y_n)\in K[Y_1,\ldots,Y_n]\) を取る。\(n>d\) と仮定する。
+  分母を払って、\(f\) は \(k[X][Y_1,\ldots,Y_n]\) 係数であるとしてよい。
+  \(X\) に関する \(f\) の係数多項式の次数の最大値を \(D\) と書く。
+
+  \(N=D\) とおき、各 \(Y_i\) を次数 \(N\) 以下の未知多項式
+  \[
+    Y_i(X)=c_{i0}+c_{i1}X+\cdots+c_{iN}X^N
+  \]
+  とおく。これを \(f\) に代入すると、\(X\) の多項式が得られる。
+  その各係数を \(0\) とおくことで、係数 \(c_{ij}\) に関する有限個の
+  斉次方程式が得られる。方程式はすべて次数 \(d\) の斉次方程式であり、
+  変数の個数は \(n(N+1)\) である。一方、方程式の個数は
+  \(D+dN+1\) 以下である。実際、\(f\) の各項は \(X\) について次数高々 \(D\) の係数と
+  \(d\) 個の \(Y_i(X)\) の積から成るので、代入後の \(X\) 次数は高々 \(D+dN\) である。
+
+  \(n>d\) なので、\(N=D\) について
+  \[
+    n(N+1)>D+dN+1
+  \]
+  となる。従って、得られた斉次方程式の個数は変数の個数より少ない。
+  補題~\ref{lem:projective-common-zero} により、これらの方程式は非自明共通零点を持つ。
+  その点は、すべての \(Y_i\) が同時に零でない多項式組
+  \((Y_1,\ldots,Y_n)\) を与え、代入により
+  \(f(Y_1,\ldots,Y_n)=0\) となる。従って \(K^n\) に非自明零点が存在する。
+
+  以上により、\(k(X)\) は \(C_1\) 体である。
+\end{proof}
+
+\subsection{Pfister 形式と三変数局所大域原理}
+
+\begin{lemma}[複素関数体上の四変数二次形式]\label{lem:complex-function-field-four-variable-quadratic}
+  \(F=\mathbb{R}(X)\) とし、
+  \[
+    F(i)=F[T]/(T^2+1)
+  \]
+  とおく。このとき任意の \(a,b\in F^\times\) について
+  \[
+    x^2-a y^2-b z^2+ab w^2=0
+  \]
+  は \(F(i)\) 上に非自明解を持つ。
+\end{lemma}
+
+\begin{proof}
+  \(F(i)\simeq\mathbb{C}(X)\) である。
+  Tsen の定理により \(\mathbb{C}(X)\) は \(C_1\) 体である。
+  上の左辺は \(F(i)\) 係数の次数 \(2\) の斉次多項式であり、変数は \(4\) 個である。
+  \(4>2\) なので、\(C_1\) 性から非自明零点が存在する。
+\end{proof}
+
+以下では、\(a,b\in F^\times\) に対し
+\[
+  \langle 1,-a,-b,ab\rangle
+\]
+を \(a,b\) に付随する 2-fold Pfister 形式と呼ぶ。
+これは二次形式
+\[
+  (x,y,z,w)\longmapsto x^2-a y^2-b z^2+ab w^2
+\]
+のことである。
+以下で使うのは、2-fold Pfister 形式の分裂判定であり、下で直接証明する。
+ここで扱う三次元部分形式は \(\langle 1,-a,-b\rangle\) である。
+通常の意味での純部分形式は \(\langle-a,-b,ab\rangle\) である。
+
+\begin{theorem}[2-fold Pfister 形式の分裂判定]
+  標数が \(2\) でない体 \(E\) と \(a,b\in E^\times\) について、
+  四変数方程式
+\[
+  x^2-a y^2-b z^2+ab w^2=0
+\]
+が \(E\) 上で非自明解を持つなら、三変数方程式
+\[
+  X^2=aY^2+bZ^2
+\]
+も \(E\) 上で非自明解を持つ。
+\end{theorem}
+
+\begin{proof}
+  非自明解を \((x,y,z,w)\) とする。
+  もし \(z^2-a w^2=0\) なら、\((z,w)\ne(0,0)\) の場合は
+  必ず \(w\ne0\) なので \(a=(z/w)^2\) であり、\(a\) は平方である。このとき
+  \(X^2=aY^2+bZ^2\) は \(Z=0\) として非自明解を持つ。
+  \((z,w)=(0,0)\) の場合も、元の非自明性から \((x,y)\ne(0,0)\) であり、
+  \(x^2=a y^2\) となる。この場合も必ず \(y\ne0\) なので
+  \(a=(x/y)^2\) は平方である。
+
+  よって \(z^2-a w^2\ne0\) としてよい。元の方程式は
+  \[
+    x^2-a y^2=b(z^2-a w^2)
+  \]
+  と書ける。二平方恒等式
+  \[
+    (xz-a y w)^2-a(xw-yz)^2
+    =(x^2-a y^2)(z^2-a w^2)
+  \]
+  を用いると、
+  \[
+    \left(\frac{xz-a y w}{z^2-a w^2}\right)^2
+    -
+    a\left(\frac{xw-yz}{z^2-a w^2}\right)^2
+    =b
+  \]
+  である。従って
+  \[
+    X=\frac{xz-a y w}{z^2-a w^2},\qquad
+    Y=\frac{xw-yz}{z^2-a w^2},\qquad
+    Z=1
+  \]
+  と置けば
+  \[
+    X^2=aY^2+bZ^2
+  \]
+  となる。これは \(E\) 上の非自明解である。
+\end{proof}
+
+\begin{lemma}\label{lem:ternary-local-global}
+  \(a,b\in\Frac^\times\) について、任意の非負元平方閉順序体 \(K\) と任意の
+  \(\Frac\)-代数構造 \(\Frac\to K\) に対し、\(K\) 上で
+  \[
+    X^2=aY^2+bZ^2
+  \]
+  が非自明解を持つなら、すでに \(\Frac\) 上で非自明解を持つ。
+\end{lemma}
+
+\begin{proof}
+  \(F=\Frac\) と書く。考える三変数形式を
+  \[
+    \varphi=\langle 1,-a,-b\rangle
+  \]
+  とし、付随する 2-fold Pfister 形式を
+  \[
+    \pi=\langle 1,-a,-b,ab\rangle
+  \]
+  とする。
+
+  まず、補題~\ref{lem:complex-function-field-four-variable-quadratic} により、\(\pi\) は \(F(i)\) 上等方的である。
+  その非自明零点を
+  \[
+    z=u+i v,\qquad u,v\in F^4
+  \]
+  と書く。ここで \(F(i)=F\oplus iF\) と見て、各座標を実部と虚部に分けている。
+  二次形式 \(\pi\) に付随する対称双線形形式を
+  \[
+    B_\pi(r,s)=r_1s_1-a r_2s_2-b r_3s_3+ab r_4s_4
+  \]
+  とする。この記法では \(\pi(r)=B_\pi(r,r)\) である。
+  係数 \(1,-a,-b,ab\) はすべて \(F\) に属するので、\(i^2=-1\) を用いて展開すると
+  \[
+    \pi(u+iv)=\pi(u)-\pi(v)+2iB_\pi(u,v)
+  \]
+  である。したがって
+  \(\pi(z)=0\) の実部と虚部は
+  \[
+    \pi(u)=\pi(v),\qquad B_\pi(u,v)=0
+  \]
+  を与える。
+
+  もし \(\pi(u)=0\) なら、\(u\) または \(v\) から \(F\) 上の \(\pi\) の非自明零点が得られる。
+  この場合、上の Pfister 形式の基本事実から
+  その 3 次元部分形式 \(\varphi=\langle 1,-a,-b\rangle\) の等方性が従い、結論を得る。
+
+  残る場合は
+  \[
+    c:=\pi(u)=\pi(v)\ne0
+  \]
+  である。このとき \(u,v\) は互いに直交し、同じ非零 norm \(c\) を持つ。
+  したがって \(u,v\) を含む直交基底を取り、\(\pi\) を対角化できる。
+  まず
+  \[
+    \pi\simeq \langle c,c,d,e\rangle
+  \]
+  と書ける。ここで \(\pi\) は非特異であり \(c\ne0\) なので、残りの対角成分も
+  \(d,e\in F^\times\) である。さらに
+  \[
+    \det(\pi)=1\cdot(-a)\cdot(-b)\cdot(ab)=a^2b^2
+  \]
+  は平方であるから、残り二つの対角成分の積 \(de\) も平方である。
+  よって最後の二つの基底ベクトルをスカラー倍して
+  \[
+    \pi\simeq \langle c,c,d,d\rangle
+  \]
+  の形にできる。以後この場合を扱う。
+
+  仮定より、任意の非負元平方閉順序体 \(K\) と任意の \(\Frac\)-代数構造 \(F\to K\) に対して、
+  \(\varphi_K\) は等方的である。
+  したがって、非自明解 \((X,Y,Z)\) に \(W=0\) を付け加えれば、
+  同じ \(K\) 上で \(\pi_K\) も等方的である。
+  上の基底変換を \(K\) へ拡大すると、
+  \[
+    \langle c,c,d,d\rangle_K
+  \]
+  も任意のそのような \(K\) 上で等方的である。
+
+  非負元平方閉順序体上で
+  \[
+    c(u_1^2+u_2^2)+d(u_3^2+u_4^2)=0
+  \]
+  が非自明解を持つことは、\(-cd\) がその体で非負であることと同値である。
+  実際、解があれば
+  \[
+    -\frac{c}{d}
+    =
+    \frac{u_3^2+u_4^2}{u_1^2+u_2^2}
+  \]
+  または同様の式で \(-c/d\) が非負になる。
+  ここで \(u_1^2+u_2^2\ne0\) である。もしこれが \(0\) なら非負元平方閉順序体では
+  \(u_1=u_2=0\) であり、方程式から \(u_3=u_4=0\) も従って非自明性に反する。
+  逆に \(-cd\ge0\) なら、非負元平方性により \(r^2=-cd\) を満たす \(r\) が取れる。
+  \(d\ne0\) なので
+  \[
+    c+d\left(\frac{r}{d}\right)^2=0
+  \]
+  であり、\((1,0,r/d,0)\) が \(\langle c,c,d,d\rangle\) の非自明零点になる。
+  従って、任意の非負元平方閉順序体 \(K\) と任意の \(F\)-代数構造 \(F\to K\) に対して、
+  \(-cd\) は \(K\) で非負に写る。
+  この段階で使っている非負元平方性は、非負元の平方根が取れるという性質である。
+
+  補題~\ref{lem:nonneg-in-all-extensions-implies-nonneg-where-defined} を適用すると、
+  \(\NNwd(-cd)\) である。
+  補題~\ref{lem:nonneg-rational-function-sum-two-squares} により
+  \[
+    -cd = r^2+s^2
+  \]
+  を満たす \(r,s\in F\) が存在する。
+
+  この平方和表示から \(\langle c,c,d,d\rangle\) の零点を具体的に作る。
+  すなわち
+  \[
+    (x_1,x_2,x_3,x_4)=(d,0,r,s)
+  \]
+  と置くと、
+  \[
+    c(x_1^2+x_2^2)+d(x_3^2+x_4^2)
+    =cd^2+d(r^2+s^2)=cd^2+d(-cd)=0
+  \]
+  である。\(d\ne0\) なので、これは成分が \(F\) に属する非自明零点である。
+  基底変換を戻すと \(\pi\) の \(F\) 上の非自明零点が得られる。
+  再び Pfister 形式の基本事実を用いると、
+  \(\langle 1,-a,-b\rangle\) も等方的になる。
+  すなわち
+  \[
+    X^2=aY^2+bZ^2
+  \]
+  は \(F=\Frac\) 上で非自明解を持つ。
+\end{proof}
+
+\begin{lemma}[第一成分非零化]\label{lem:first-coordinate-nonzero}
+  標数 \(0\) の体 \(E\) と \(a,b\in E^\times\) について、
+  \[
+    x^2=a y^2+b z^2
+  \]
+  が非自明解を持つなら、第一成分が非零である解も持つ。
+\end{lemma}
+
+\begin{proof}
+  もとの解を \((x_0,y_0,z_0)\) とする。\(x_0\ne0\) ならそのままでよい。
+  \(x_0=0\) の場合、非自明性と \(a,b\ne0\) から \(y_0,z_0\ne0\) であり、
+  \[
+    a y_0^2+b z_0^2=0
+  \]
+  である。このとき
+  \[
+    x=2ay_0,\qquad y=(a+1)y_0,\qquad z=(1-a)z_0
+  \]
+  と置く。第一成分は \(2ay_0\ne0\) であり、直接計算により
+  \[
+    a((a+1)y_0)^2+b((1-a)z_0)^2
+    =(2ay_0)^2+(1-a)^2(a y_0^2+b z_0^2)
+    =(2ay_0)^2
+  \]
+  となる。従って \((x,y,z)\) が求める解である。
+\end{proof}
+
+{\renewcommand{\restateprefix}{再掲; }\binarySumTwoSquares*}
+
+\begin{proof}
+  まず、任意の非負元平方閉順序体上で
+  \[
+    X^2=aY^2+bZ^2
+  \]
+  が非自明解を持つことを示す。
+  \(\NNwd\) を満たす有理関数は、補題~\ref{lem:nonneg-rational-function-sum-two-squares} により
+  \[
+    a=r_1^2+s_1^2,\qquad b=r_2^2+s_2^2
+  \]
+  と書ける。任意の非負元平方閉順序体では平方和は非負であり、体準同型では非零元は非零元へ写る。
+  したがって \(a,b\) の像は正であり、非負元平方閉順序体では正元の平方根が取れる。
+  例えば \(a\) の像を \(A\) とし、\(\alpha^2=A\) と書けば、
+  \[
+    (X,Y,Z)=(1,\alpha^{-1},0)
+  \]
+  は \(X^2=AY^2+BZ^2\) の非自明解である。
+  そのため、任意の非負元平方閉順序体上で
+  \[
+    X^2=aY^2+bZ^2
+  \]
+  は非自明解を持つ。補題~\ref{lem:ternary-local-global} により、同じ方程式は \(\Frac\) 上でも非自明解を持つ。
+  さらに補題~\ref{lem:first-coordinate-nonzero} により \(X\ne0\) の解を取れるため、\(u=Y/X\)、\(v=Z/X\) と置けば
+  \[
+    1=a u^2+b v^2
+  \]
+  である。
+\end{proof}
+
+\begin{thebibliography}{99}
+
+\bibitem{HanselkaSinn}
+Christoph Hanselka and Rainer Sinn,
+\emph{Positive Semidefinite Univariate Matrix Polynomials},
+Mathematische Zeitschrift 292 (2019), no. 1--2, 83--101.
+
+\bibitem{BPSV}
+Grigoriy Blekherman, Daniel Plaumann, Rainer Sinn, and Cynthia Vinzant,
+\emph{Low-Rank Sum-of-Squares Representations on Varieties of Minimal Degree},
+International Mathematics Research Notices 2019, no. 1, 33--54.
+
+\bibitem{KlepSchweighofer}
+Igor Klep and Markus Schweighofer,
+\emph{Pure States, Positive Matrix Polynomials and Sums of Hermitian Squares},
+Indiana University Mathematics Journal 59 (2010), no. 3, 857--874.
+
+\bibitem{PowersReznick}
+Victoria Powers and Bruce Reznick,
+\emph{Polynomials That Are Positive on an Interval},
+Transactions of the American Mathematical Society 352 (2000), no. 10,
+4677--4692.
+
+\bibitem{LamQuadraticForms}
+Tsit-Yuen Lam,
+\emph{Introduction to Quadratic Forms over Fields},
+Graduate Studies in Mathematics, vol. 67, American Mathematical Society, 2005.
+
+\bibitem{LangAlgebra}
+Serge Lang,
+\emph{Algebra},
+Graduate Texts in Mathematics, vol. 211, revised third edition, Springer, 2002.
+
+\bibitem{EisenbudCA}
+David Eisenbud,
+\emph{Commutative Algebra with a View Toward Algebraic Geometry},
+Graduate Texts in Mathematics, vol. 150, Springer, 1995.
+
+\bibitem{Hahn1907}
+Hans Hahn,
+\emph{\"Uber die nichtarchimedischen Gr\"ossensysteme},
+Sitzungsberichte der Kaiserlichen Akademie der Wissenschaften, Wien,
+Mathematisch-Naturwissenschaftliche Klasse 116 (1907), 601--655.
+
+\bibitem{RibenboimFields}
+Paulo Ribenboim,
+\emph{The Theory of Classical Valuations},
+Springer Monographs in Mathematics, Springer, 1999.
+
+\end{thebibliography}
+
+\end{document}
