@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.RationalFunction
 import Mathlib.Tactic
 
+/-!
+# Common denominators for rational-function certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

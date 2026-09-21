@@ -8,6 +8,10 @@ import MatrixSOS.Proof.FullLine.SquareExtension
 import MatrixSOS.Proof.DiagonalReduction.Bilinear.MatrixBridge
 import MatrixSOS.Proof.DiagonalReduction.Compression.ZeroRow
 
+/-!
+# Exact full-line matrix sum-of-squares certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

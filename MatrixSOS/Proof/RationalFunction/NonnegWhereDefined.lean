@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.RationalFunction.NonnegWhereDefinedAlgebra
 import MatrixSOS.Proof.Polynomial
 
+/-!
+# Nonnegativity of rational functions where defined
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

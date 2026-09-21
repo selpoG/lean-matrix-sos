@@ -10,6 +10,10 @@ import Mathlib.FieldTheory.Laurent
 import Mathlib.RingTheory.HahnSeries.Lex
 import Mathlib.RingTheory.LaurentSeries
 
+/-!
+# Ordered extensions used to test rational-function positivity
+-/
+
 open Filter Polynomial
 noncomputable section
 
@@ -44,12 +48,12 @@ theorem negative_lexLaurentSeries_of_negative_trailingCoeff
           (by
             have hj' : (((p : PowerSeries ℝ) : LaurentSeries ℝ).coeff j) ≠ 0 := by
               simpa [s] using hj
-            rw [PowerSeries.coeff_coe, if_neg (show ¬ j < 0 from not_lt.mpr hjnonneg)] at hj'
+            rw [PowerSeries.coeff_coe, ite_eq_right (show ¬ j < 0 from not_lt.mpr hjnonneg)] at hj'
             simpa using hj')
       · exfalso
         have hj' : (((p : PowerSeries ℝ) : LaurentSeries ℝ).coeff j) ≠ 0 := by
           simpa [s] using hj
-        rw [PowerSeries.coeff_coe, if_pos (lt_of_not_ge hjnonneg)] at hj'
+        rw [PowerSeries.coeff_coe, ite_eq_left (lt_of_not_ge hjnonneg)] at hj'
         exact hj' rfl
   have hsneg : s.leadingCoeff < 0 := by
     have htop : s.orderTop ≠ ⊤ := HahnSeries.orderTop_ne_top.mpr hne

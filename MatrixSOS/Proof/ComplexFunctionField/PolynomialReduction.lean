@@ -13,6 +13,10 @@ import Mathlib.RingTheory.MvPolynomial.Homogeneous
 import Mathlib.RingTheory.Nullstellensatz
 import Mathlib.RingTheory.Polynomial.RationalRoot
 
+/-!
+# Polynomial reduction over the complex function field
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

@@ -9,6 +9,10 @@ import MatrixSOS.Proof.DiagonalReduction.Bilinear.DiagonalData
 import MatrixSOS.Proof.RationalFunction.BinarySum
 import MatrixSOS.Proof.RationalFunction.NonnegWhereDefinedAlgebra
 
+/-!
+# Preservation of positive semidefiniteness under diagonal reduction
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

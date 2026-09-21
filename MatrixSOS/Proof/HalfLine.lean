@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.FullLine.Exact
 
+/-!
+# Reduction of half-line positivity to full-line certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 
@@ -59,12 +63,12 @@ lemma even_odd_decomp (p : Poly) :
       Polynomial.coeff_expand hpos]
     by_cases hEven : 2 ∣ n
     · have hOddSucc : ¬ 2 ∣ n + 1 := by omega
-      rw [if_neg hOddSucc, if_pos hEven, zero_add]
+      rw [ite_eq_right hOddSucc, ite_eq_left hEven, zero_add]
       rw [coeff_oddPart]
       have hEq : 2 * (n / 2) + 1 = n + 1 := by omega
       simp [hEq]
     · have hEvenSucc : 2 ∣ n + 1 := by omega
-      rw [if_pos hEvenSucc, if_neg hEven, add_zero]
+      rw [ite_eq_left hEvenSucc, ite_eq_right hEven, add_zero]
       rw [coeff_evenPart]
       have hEq : 2 * ((n + 1) / 2) = n + 1 := by omega
       simp [hEq]

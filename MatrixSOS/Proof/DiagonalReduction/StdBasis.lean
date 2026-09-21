@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.PolyMatrix
 
+/-!
+# Standard basis identities for diagonal reduction
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

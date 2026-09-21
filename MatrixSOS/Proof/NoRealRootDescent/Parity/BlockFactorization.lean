@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.NoRealRootDescent.Divisibility
 import Mathlib.Data.Matrix.ColumnRowPartitioned
 
+/-!
+# Block factorizations for parity descent
+-/
+
 open Polynomial
 open scoped Matrix
 

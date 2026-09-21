@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.HalfLine
 import MatrixSOS.Proof.Interval.Certificates
 
+/-!
+# Normalized interval sum-of-squares certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 
@@ -73,7 +77,7 @@ lemma natDegree_intervalLeftChartPoly_le (D : ℕ) (p : Poly) :
   have hleft : (Polynomial.C (p.coeff k) * Polynomial.X ^ k).natDegree ≤ k :=
     Polynomial.natDegree_C_mul_X_pow_le (p.coeff k) k
   have hright : ((1 + Polynomial.X : Poly) ^ (D - k)).natDegree ≤ D - k := by
-    simpa using Polynomial.natDegree_pow_le_of_le (D - k) hlin
+    simpa only [mul_one] using Polynomial.natDegree_pow_le_of_le (D - k) hlin
   exact (add_le_add hleft hright).trans (by omega)
 
 lemma natDegree_intervalLeftChartMat_le {m D : ℕ} {M : PolyMat m} :

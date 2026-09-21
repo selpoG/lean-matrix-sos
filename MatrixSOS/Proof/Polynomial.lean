@@ -20,6 +20,10 @@ import Mathlib.Algebra.Polynomial.Inductions
 import Mathlib.Tactic.Ring
 import Mathlib.RingTheory.PrincipalIdealDomain
 
+/-!
+# Polynomial identities used in matrix sum-of-squares proofs
+-/
+
 open Polynomial
 
 noncomputable section
@@ -62,7 +66,7 @@ theorem coeff_sum_squares_two_mul
           if natDegree (f i) = N then (leadingCoeff (f i)) ^ 2 else 0 := by
     intro i
     by_cases hi : natDegree (f i) = N
-    · rw [if_pos hi, ← hi]
+    · rw [ite_eq_left hi, ← hi]
       exact coeff_pow_two_two_natDegree (f i)
     · have hlt : natDegree (f i) < N := lt_of_le_of_ne (hN i) hi
       simp [hi, coeff_pow_two_eq_zero_of_natDegree_lt (f i) hlt]

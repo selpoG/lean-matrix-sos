@@ -8,6 +8,10 @@ import MatrixSOS.Proof.RationalFunction.Statements
 import MatrixSOS.Proof.RationalFunction.NonnegWhereDefined
 import MatrixSOS.Proof.QuadraticForms
 
+/-!
+# The local-global step for rational-function positivity
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

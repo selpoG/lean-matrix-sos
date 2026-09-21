@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.RationalFunction.Statements
 import MatrixSOS.Proof.RationalFunction.NonnegWhereDefined
 
+/-!
+# Binary sums of squares over rational functions
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.ComplexFunctionField.FracComplexI
 import MatrixSOS.Proof.QuadraticForms
 
+/-!
+# Pfister forms over the complex function field
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

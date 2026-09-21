@@ -8,6 +8,10 @@ import Mathlib.Algebra.Field.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
 
+/-!
+# Quadratic forms associated with polynomial matrices
+-/
+
 noncomputable section
 
 namespace MatrixSOS

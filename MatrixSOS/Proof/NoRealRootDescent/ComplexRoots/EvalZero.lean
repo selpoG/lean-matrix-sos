@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.NoRealRootDescent.ComplexRoots.PairBlocks
 import MatrixSOS.Proof.NoRealRootDescent.Parity.BlockFactorization
 
+/-!
+# Vanishing at complex roots in polynomial matrix descent
+-/
+
 open Polynomial
 open scoped Matrix
 

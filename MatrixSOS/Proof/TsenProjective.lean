@@ -8,6 +8,10 @@ import MatrixSOS.Proof.ProjectiveIdealHeight
 import Mathlib.Algebra.MvPolynomial.Eval
 import Mathlib.RingTheory.MvPolynomial.Homogeneous
 
+/-!
+# Projective common zeros for the proof of Tsen's theorem
+-/
+
 noncomputable section
 
 namespace MatrixSOS

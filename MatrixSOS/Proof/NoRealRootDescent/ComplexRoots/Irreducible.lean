@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.NoRealRootDescent.ComplexRoots.Pointwise
 
+/-!
+# Descent through irreducible factors with no real roots
+-/
+
 open Polynomial
 open scoped Matrix
 

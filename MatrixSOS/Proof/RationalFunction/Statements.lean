@@ -21,6 +21,10 @@ import Mathlib.RingTheory.Localization.NumDen
 import Mathlib.RingTheory.Polynomial.Radical
 import Mathlib.RingTheory.Polynomial.SmallDegreeVieta
 
+/-!
+# Statements for rational-function sum-of-squares certificates
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

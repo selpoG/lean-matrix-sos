@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.NoRealRootDescent.ComplexRoots.EvalZero
 import MatrixSOS.Proof.NoRealRootDescent.Parity
 
+/-!
+# Pointwise identities for complex-root descent
+-/
+
 open Polynomial
 open scoped Matrix
 

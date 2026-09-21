@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.FullLine.Exact
 
+/-!
+# Public certificates for positivity on the real line
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.ComplexFunctionField.PfisterForm
 
+/-!
+# Passage between complex function fields and rational functions
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

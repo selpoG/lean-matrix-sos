@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.NoRealRootDescent.Divisibility
 import Mathlib.RingTheory.Polynomial.SmallDegreeVieta
 
+/-!
+# Factorization at complex roots in matrix descent
+-/
+
 open Polynomial
 open scoped Matrix
 

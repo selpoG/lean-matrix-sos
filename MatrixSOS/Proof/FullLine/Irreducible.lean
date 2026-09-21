@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.NoRealRootDescent.ComplexRoots.Irreducible
 
+/-!
+# Cancellation of irreducible factors in full-line certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

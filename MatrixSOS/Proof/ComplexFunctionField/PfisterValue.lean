@@ -9,6 +9,10 @@ import MatrixSOS.Proof.RationalFunction.LocalGlobal
 import Mathlib.LinearAlgebra.BilinearForm.Orthogonal
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
+/-!
+# Values represented by the relevant Pfister forms
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

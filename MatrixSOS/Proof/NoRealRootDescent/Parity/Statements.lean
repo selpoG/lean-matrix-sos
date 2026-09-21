@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.NoRealRootDescent.Divisibility
 
+/-!
+# Statements of the parity descent identities
+-/
+
 open Polynomial
 open scoped Matrix
 

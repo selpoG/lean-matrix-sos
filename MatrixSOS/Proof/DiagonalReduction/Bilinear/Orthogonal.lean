@@ -13,6 +13,10 @@ import Mathlib.LinearAlgebra.Matrix.BilinearForm
 import Mathlib.LinearAlgebra.Matrix.Symmetric
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
+/-!
+# Orthogonal decompositions for bilinear diagonal reduction
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 

@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.PolyMatrix
 
+/-!
+# Rectangular Gram factors from square matrix factorizations
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section
