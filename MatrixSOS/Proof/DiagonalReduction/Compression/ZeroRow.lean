@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.DiagonalReduction.Compression.SmithKernel
 import MatrixSOS.Proof.DiagonalReduction.StdBasis
 
+/-!
+# Compression of zero rows in polynomial matrices
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 

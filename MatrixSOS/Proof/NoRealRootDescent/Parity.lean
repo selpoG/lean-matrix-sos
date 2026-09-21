@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.NoRealRootDescent.Parity.BlockFactorization
 import Mathlib.Data.Matrix.ColumnRowPartitioned
 
+/-!
+# Parity decomposition in descent without real roots
+-/
+
 open Polynomial
 open scoped Matrix
 noncomputable section

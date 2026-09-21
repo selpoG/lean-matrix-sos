@@ -9,3 +9,7 @@ import MatrixSOS.Certificates.HalfLine
 import MatrixSOS.Certificates.Interval
 import MatrixSOS.Certificates.Scalar
 import MatrixSOS.Certificates.Constant
+
+/-!
+# Public matrix sum-of-squares certificates
+-/

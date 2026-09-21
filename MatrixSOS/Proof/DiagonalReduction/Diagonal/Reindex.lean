@@ -9,6 +9,10 @@ import Mathlib.Data.Matrix.ColumnRowPartitioned
 import Mathlib.FieldTheory.RatFunc.AsPolynomial
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
+/-!
+# Reindexing diagonal matrix certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

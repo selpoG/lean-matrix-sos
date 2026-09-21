@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.RationalFunction.Statements
 
+/-!
+# Positivity and sums of squares over rational functions
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

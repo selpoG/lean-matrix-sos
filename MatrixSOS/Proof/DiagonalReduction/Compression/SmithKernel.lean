@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.DiagonalReduction.StdBasis
 import Mathlib.LinearAlgebra.FreeModule.PID
 
+/-!
+# Kernel compression using Smith normal form
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

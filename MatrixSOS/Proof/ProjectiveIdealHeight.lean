@@ -9,6 +9,10 @@ import Mathlib.RingTheory.KrullDimension.Polynomial
 import Mathlib.RingTheory.MvPolynomial.Ideal
 import Mathlib.RingTheory.Nullstellensatz
 
+/-!
+# Projective ideal height bounds for homogeneous equations
+-/
+
 noncomputable section
 
 namespace MatrixSOS

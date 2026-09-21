@@ -9,6 +9,10 @@ import Mathlib.Analysis.Polynomial.Basic
 import Mathlib.RingTheory.Localization.NumDen
 import Mathlib.Topology.Algebra.Polynomial
 
+/-!
+# Algebra of nonnegativity away from poles
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

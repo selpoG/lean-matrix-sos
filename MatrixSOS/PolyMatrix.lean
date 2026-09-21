@@ -12,6 +12,10 @@ import Mathlib.Algebra.Polynomial.Expand
 import Mathlib.Tactic.Ring
 import Mathlib.Data.Matrix.ColumnRowPartitioned
 
+/-!
+# Polynomial matrices, positivity, and sums of squares
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

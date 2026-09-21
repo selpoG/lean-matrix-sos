@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.DiagonalReduction.Diagonal.Reindex
 import MatrixSOS.Proof.DiagonalReduction.BinaryMatrix
 
+/-!
+# Two-term sums in diagonal matrix reduction
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

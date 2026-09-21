@@ -8,6 +8,10 @@ import MatrixSOS.Proof.NoRealRootDescent.ComplexRoots.RealImag
 import MatrixSOS.Proof.NoRealRootDescent.Parity.Statements
 import MatrixSOS.PolyMatrix
 
+/-!
+# Paired real and imaginary blocks in complex-root descent
+-/
+
 open Polynomial
 open scoped Matrix
 
@@ -113,7 +117,7 @@ theorem orthogonal_to_complexPairRealImagEuclideanFamily_of_not_mem_range_even
         have hinner' := by
           simpa [pairIndexEmbedding_apply_fst] using
             (orthonormal_iff_ite.mp b.orthonormal i (pairIndexEmbedding hrle (Sum.inl (), u)))
-        exact hinner'.trans (if_neg hneq_re')
+        exact hinner'.trans (ite_eq_right hneq_re')
       have hinner' : inner ℝ (b (pairIndexEmbedding hrle (Sum.inl (), u))) (b i) = 0 := by
         simpa [real_inner_comm] using hinner
       change inner ℝ (b (pairIndexEmbedding hrle (Sum.inl (), u))) (b i) = 0
@@ -128,7 +132,7 @@ theorem orthogonal_to_complexPairRealImagEuclideanFamily_of_not_mem_range_even
         have hinner' := by
           simpa [pairIndexEmbedding_apply_fst] using
             (orthonormal_iff_ite.mp b.orthonormal i (pairIndexEmbedding hrle (Sum.inr (), u)))
-        exact hinner'.trans (if_neg hneq_im')
+        exact hinner'.trans (ite_eq_right hneq_im')
       have hinner' : inner ℝ (b (pairIndexEmbedding hrle (Sum.inr (), u))) (b i) = 0 := by
         simpa [real_inner_comm] using hinner
       change inner ℝ (b (pairIndexEmbedding hrle (Sum.inr (), u))) (b i) = 0
@@ -384,7 +388,7 @@ theorem orthogonal_to_complexPairRealImagEuclideanFamily_of_not_mem_range_odd
         have hinner' := by
           simpa [oddPairIndexEmbedding_apply_fst] using
             (orthonormal_iff_ite.mp b.orthonormal i (oddPairIndexEmbedding hrle (Sum.inl (), u)))
-        exact hinner'.trans (if_neg hneq_re')
+        exact hinner'.trans (ite_eq_right hneq_re')
       have hinner' : inner ℝ (b (oddPairIndexEmbedding hrle (Sum.inl (), u))) (b i) = 0 := by
         simpa [real_inner_comm] using hinner
       change inner ℝ (b (oddPairIndexEmbedding hrle (Sum.inl (), u))) (b i) = 0
@@ -399,7 +403,7 @@ theorem orthogonal_to_complexPairRealImagEuclideanFamily_of_not_mem_range_odd
         have hinner' := by
           simpa [oddPairIndexEmbedding_apply_fst] using
             (orthonormal_iff_ite.mp b.orthonormal i (oddPairIndexEmbedding hrle (Sum.inr (), u)))
-        exact hinner'.trans (if_neg hneq_im')
+        exact hinner'.trans (ite_eq_right hneq_im')
       have hinner' : inner ℝ (b (oddPairIndexEmbedding hrle (Sum.inr (), u))) (b i) = 0 := by
         simpa [real_inner_comm] using hinner
       change inner ℝ (b (oddPairIndexEmbedding hrle (Sum.inr (), u))) (b i) = 0

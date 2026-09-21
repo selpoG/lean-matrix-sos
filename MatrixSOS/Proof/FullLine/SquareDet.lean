@@ -8,6 +8,10 @@ import MatrixSOS.Proof.FullLine.Irreducible
 import MatrixSOS.Proof.DiagonalReduction.PSD
 import MatrixSOS.Proof.FullLineAlgebra.Denominators
 
+/-!
+# Full-line certificates for matrices with square determinant
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

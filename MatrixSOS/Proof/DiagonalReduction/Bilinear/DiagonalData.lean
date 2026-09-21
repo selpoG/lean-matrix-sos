@@ -10,6 +10,10 @@ import MatrixSOS.Proof.RationalFunction.CommonDenominator
 import MatrixSOS.PolyMatrix
 import Mathlib.LinearAlgebra.Matrix.PosDef
 
+/-!
+# Diagonal data for symmetric bilinear forms
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

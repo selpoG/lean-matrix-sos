@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.DiagonalReduction.Diagonal.SumFinTwo
 
+/-!
+# The binary step in diagonal polynomial matrix reduction
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

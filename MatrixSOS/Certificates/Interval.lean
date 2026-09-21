@@ -8,6 +8,10 @@ import MatrixSOS.Proof.Interval.Normalized
 import MatrixSOS.Proof.Interval.Certificates
 import MatrixSOS.Certificates.FullLine
 
+/-!
+# Public certificates for positivity on a closed interval
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

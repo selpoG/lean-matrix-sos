@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.RationalFunction.CommonDenominator
 import MatrixSOS.Proof.FullLineAlgebra.SquareExtension
 
+/-!
+# Clearing denominators in full-line matrix factorizations
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

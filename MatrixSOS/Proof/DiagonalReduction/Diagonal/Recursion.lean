@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.DiagonalReduction.Diagonal.BinaryStep
 
+/-!
+# Recursive diagonal reduction of polynomial matrices
+-/
+
 open Matrix Polynomial
 open scoped Matrix RatFunc
 

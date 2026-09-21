@@ -12,6 +12,10 @@ import Mathlib.LinearAlgebra.Complex.Module
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.RingTheory.Localization.NumDen
 
+/-!
+# The complex unit in the fraction field extension
+-/
+
 open Matrix Polynomial
 open scoped QuadraticAlgebra Matrix
 noncomputable section

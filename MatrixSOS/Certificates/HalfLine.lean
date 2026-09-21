@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.HalfLine
 
+/-!
+# Public certificates for positivity on a half-line
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

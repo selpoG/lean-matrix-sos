@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.FullLineAlgebra.RectangularExtraction
 import MatrixSOS.RationalFunction
 
+/-!
+# Algebraic identities for square extensions
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

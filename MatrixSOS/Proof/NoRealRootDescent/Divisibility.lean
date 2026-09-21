@@ -7,6 +7,10 @@ Authors: selpo
 import MatrixSOS.Proof.Polynomial
 import Mathlib.Data.Matrix.Basic
 
+/-!
+# Polynomial divisibility in descent without real roots
+-/
+
 open Polynomial
 open scoped Matrix
 noncomputable section

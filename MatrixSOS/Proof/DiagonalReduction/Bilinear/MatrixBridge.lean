@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.DiagonalReduction.StdBasis
 
+/-!
+# Passage between bilinear forms and their matrices
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 

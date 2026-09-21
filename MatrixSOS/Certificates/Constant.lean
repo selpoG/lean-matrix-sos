@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Certificates.FullLine
 
+/-!
+# Certificates for constant positive semidefinite matrices
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

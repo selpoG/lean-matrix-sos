@@ -8,6 +8,10 @@ import MatrixSOS.Proof.TsenProjective
 import Mathlib.FieldTheory.RatFunc.Basic
 import Mathlib.RingTheory.Polynomial.RationalRoot
 
+/-!
+# Coefficient comparison in the proof of Tsen's theorem
+-/
+
 open Matrix Polynomial
 open scoped BigOperators
 noncomputable section
@@ -43,8 +47,7 @@ lemma coeff_isHomogeneous_of_optionEquivLeft_symm_weighted
   classical
   intro m hm
   have hcoeff :
-      MvPolynomial.coeff (m.optionElim n)
-          ((MvPolynomial.optionEquivLeft K σ).symm p) ≠ 0 := by
+      ((MvPolynomial.optionEquivLeft K σ).symm p).coeff (m.optionElim n) ≠ 0 := by
     rw [← MvPolynomial.optionEquivLeft_coeff_some_coeff_none]
     simpa using hm
   have hw := hp hcoeff

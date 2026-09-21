@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Certificates.FullLine
 
+/-!
+# Scalar polynomial sum-of-squares certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

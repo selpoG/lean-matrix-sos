@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.Proof.NoRealRootDescent.ComplexRoots.RootFactorization
 
+/-!
+# Real and imaginary parts in complex-root descent
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 

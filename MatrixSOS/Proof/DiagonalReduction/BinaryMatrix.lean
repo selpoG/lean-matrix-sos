@@ -9,6 +9,10 @@ import Mathlib.Data.Matrix.ColumnRowPartitioned
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
+/-!
+# Binary polynomial matrix reduction
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 

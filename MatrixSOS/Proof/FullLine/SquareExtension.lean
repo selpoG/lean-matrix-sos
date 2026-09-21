@@ -8,6 +8,10 @@ import MatrixSOS.Proof.FullLine.SquareDet
 import MatrixSOS.Proof.Polynomial
 import Mathlib.LinearAlgebra.StdBasis
 
+/-!
+# Full-line certificates via a square extension
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section

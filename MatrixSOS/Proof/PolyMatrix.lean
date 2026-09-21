@@ -11,6 +11,10 @@ import Mathlib.LinearAlgebra.Matrix.Symmetric
 import Mathlib.LinearAlgebra.StdBasis
 import Mathlib.Tactic.Ring
 
+/-!
+# Algebraic operations on polynomial matrix sums of squares
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

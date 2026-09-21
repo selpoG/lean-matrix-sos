@@ -6,6 +6,10 @@ Authors: selpo
 
 import MatrixSOS.PolyMatrix
 
+/-!
+# Definitions of degree-bounded interval certificates
+-/
+
 open Matrix Polynomial
 open scoped Matrix MatrixOrder
 

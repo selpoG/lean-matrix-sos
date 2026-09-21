@@ -5,7 +5,11 @@ Authors: selpo
 -/
 
 import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
+
+/-!
+# Real polynomial coefficients for matrix sums of squares
+-/
 
 namespace MatrixSOS
 

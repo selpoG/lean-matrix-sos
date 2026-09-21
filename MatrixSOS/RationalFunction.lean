@@ -10,6 +10,10 @@ import Mathlib.Algebra.Order.Hom.Ring
 import Mathlib.Data.Matrix.Basic
 import Mathlib.RingTheory.Localization.FractionRing
 
+/-!
+# Rational functions and positivity away from poles
+-/
+
 open Matrix Polynomial
 open scoped Matrix
 noncomputable section
