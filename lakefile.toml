@@ -1,5 +1,5 @@
 name = "lean_matrix_sos"
-version = "0.1.0"
+version = "0.1.1"
 keywords = ["math", "lean", "sos", "matrix-polynomials"]
 defaultTargets = ["MatrixSOS"]
 fixedToolchain = true

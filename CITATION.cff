@@ -1,10 +1,11 @@
 cff-version: 1.2.0
+type: software
 message: "If you use this formalization, please cite it as below."
 title: "lean-matrix-sos: A Lean formalization of matrix sum-of-squares factorization theorems"
 authors:
-  - name: "selpo"
-version: 0.1.0
-date-released: 2026-09-06
+  - given-names: "Mocho"
+    family-names: "Go"
+version: 0.1.1
 repository-code: "https://github.com/selpoG/lean-matrix-sos"
 license: "Apache-2.0"
 keywords:
@@ -13,3 +14,7 @@ keywords:
   - sum of squares
   - matrix polynomial
   - Hahn series
+abstract: >-
+  A Lean 4 formalization of sums-of-squares factorization theorems for real
+  symmetric univariate matrix polynomials, including degree-bounded full-line
+  factorizations, Gram-matrix certificates, and interval and half-line variants.
