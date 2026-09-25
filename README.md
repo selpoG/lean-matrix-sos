@@ -294,5 +294,9 @@ SOS theorem.
 
 ## Citation and License
 
-This repository is licensed under Apache-2.0. Citation metadata is provided in
-`CITATION.cff`.
+Author: **Mocho Go** ([selpoG](https://github.com/selpoG)).
+
+Please cite the software using [CITATION.cff](CITATION.cff), and identify the
+release or commit you used so that the cited formalization is reproducible.
+
+Released under the [Apache License 2.0](LICENSE).
