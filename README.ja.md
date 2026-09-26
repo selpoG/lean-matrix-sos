@@ -2,6 +2,8 @@
 
 [English](README.md)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22974220.svg)](https://doi.org/10.5281/zenodo.22974220)
+
 このリポジトリは、実対称一変数多項式行列に対する SOS
 (sum of squares, 平方和) 分解定理を Lean 4 で形式化します。
 
@@ -266,5 +268,9 @@ RationalHahnField = Lex (HahnSeries ℚ ℝ)
 
 ソフトウェアとしての引用情報は [CITATION.cff](CITATION.cff) に記載しています。
 引用した形式化を再現できるよう、使用したリリースまたは commit を明記してください。
+
+保存済みの **v0.1.1** は
+[10.5281/zenodo.22974221](https://doi.org/10.5281/zenodo.22974221) から参照できます。
+冒頭の DOI バッジは、このソフトウェアの全バージョンをまとめたレコードを指します。
 
 [Apache License 2.0](LICENSE) の下で公開しています。

@@ -7,6 +7,9 @@ authors:
     family-names: "Go"
     orcid: "https://orcid.org/0009-0000-8123-9408"
 version: 0.1.1
+date-released: 2026-09-26
+# This DOI identifies v0.1.1; replace it when citing a different release.
+doi: "10.5281/zenodo.22974221"
 repository-code: "https://github.com/selpoG/lean-matrix-sos"
 license: "Apache-2.0"
 keywords:
