@@ -2,6 +2,8 @@
 
 [日本語版](README.ja.md)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22974220.svg)](https://doi.org/10.5281/zenodo.22974220)
+
 This repository formalizes, in Lean 4, sums-of-squares factorization theorems
 for real symmetric univariate matrix polynomials.
 
@@ -299,5 +301,9 @@ Author: **Mocho Go** ([selpoG](https://github.com/selpoG)).
 
 Please cite the software using [CITATION.cff](CITATION.cff), and identify the
 release or commit you used so that the cited formalization is reproducible.
+
+The archived **v0.1.1** release is available at
+[10.5281/zenodo.22974221](https://doi.org/10.5281/zenodo.22974221).
+The DOI badge above represents all versions of this software.
 
 Released under the [Apache License 2.0](LICENSE).
